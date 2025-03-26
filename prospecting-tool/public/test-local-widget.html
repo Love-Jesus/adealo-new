@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adealo Widget Local Test Page</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #2563eb;
+      margin-top: 40px;
+    }
+    h2 {
+      color: #4b5563;
+      margin-top: 30px;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-top: 40px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    .content {
+      min-height: 1200px; /* Make the page scrollable for testing scroll triggers */
+    }
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #f9fafb;
+      border-radius: 8px;
+    }
+    .widget-id-form {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #dbeafe;
+      border-radius: 8px;
+    }
+    input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 16px;
+      width: 300px;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    .config-section {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f0f9ff;
+      border-radius: 8px;
+    }
+    .config-option {
+      margin-bottom: 10px;
+    }
+    .config-option label {
+      display: inline-block;
+      width: 150px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>Adealo Widget Local Test Page</h1>
+    </div>
+
+    <div class="widget-id-form">
+      <h2>Test Your Widget Locally</h2>
+      <p>This page is designed to test your widget with the local development server.</p>
+      <div>
+        <input type="text" id="widgetId" placeholder="Enter your widget ID" value="Hd7aCeQgoHBViWqtz8af">
+        <button onclick="loadWidget()">Load Widget</button>
+      </div>
+
+      <div class="config-section">
+        <h3>Configuration</h3>
+        <div class="config-option">
+          <label for="useLocalServer">Use Local Server:</label>
+          <input type="checkbox" id="useLocalServer" checked>
+          <span>(Unchecking will use the deployed Firebase functions)</span>
+        </div>
+        <div class="config-option">
+          <label for="localPort">Local Port:</label>
+          <input type="number" id="localPort" value="5001" style="width: 80px;">
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="section">
+        <h2>About Adealo Widgets</h2>
+        <p>Adealo Widgets provide an easy way to add interactive elements to your website that help convert visitors into leads. With customizable designs and behavior, you can create widgets that match your brand and engage your audience effectively.</p>
+      </div>
+
+      <div class="section">
+        <h2>Widget Features</h2>
+        <ul>
+          <li>Customizable design and appearance</li>
+          <li>Multiple trigger options (time, scroll, exit intent)</li>
+          <li>Lead data collection</li>
+          <li>Calendly integration</li>
+          <li>Mobile-responsive design</li>
+          <li>Analytics and tracking</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>How It Works</h2>
+        <p>The Adealo Widget system consists of several components:</p>
+        <ol>
+          <li>Widget Editor - Create and customize your widgets</li>
+          <li>Widget Embed - Add the widget to your website with a simple code snippet</li>
+          <li>Widget Analytics - Track performance and conversions</li>
+        </ol>
+      </div>
+
+      <div class="section">
+        <h2>Getting Started</h2>
+        <p>To create your own widget:</p>
+        <ol>
+          <li>Sign up for an Adealo account</li>
+          <li>Navigate to the Widgets section</li>
+          <li>Click "Create New Widget"</li>
+          <li>Customize your widget's design, content, behavior, and integration settings</li>
+          <li>Save and publish your widget</li>
+          <li>Copy the embed code and add it to your website</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function loadWidget() {
+      // Remove any existing widget script
+      const existingScript = document.getElementById('adealo-widget-script');
+      if (existingScript) {
+        existingScript.remove();
+      }
+      
+      // Get the widget ID from the input
+      const widgetId = document.getElementById('widgetId').value.trim();
+      
+      if (!widgetId) {
+        alert('Please enter a widget ID');
+        return;
+      }
+      
+      // Get configuration options
+      const useLocalServer = document.getElementById('useLocalServer').checked;
+      const localPort = document.getElementById('localPort').value;
+      
+      // Determine the loader URL based on configuration
+      let loaderUrl;
+      if (useLocalServer) {
+        loaderUrl = `http://localhost:${localPort}/adealo-ce238/us-central1/getWidgetScriptHttp?widgetId=${widgetId}`;
+      } else {
+        loaderUrl = 'https://adealo-ce238.web.app/loader.js';
+      }
+      
+      // Create and add the widget script
+      const script = document.createElement('script');
+      script.id = 'adealo-widget-script';
+      
+      if (useLocalServer) {
+        // For local development, directly fetch the script
+        fetch(loaderUrl)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(scriptContent => {
+            script.textContent = scriptContent;
+            document.head.appendChild(script);
+            console.log('Widget script loaded from local server');
+          })
+          .catch(error => {
+            console.error('Error loading widget script:', error);
+            alert(`Error loading widget script: ${error.message}`);
+          });
+      } else {
+        // For production, use the standard loader
+        script.innerHTML = `
+          (function(w,d,s,o,f,js,fjs){
+            w['AdealoWidget']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+            w[o].l=1*new Date();js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+            js.async=1;js.src=f;fjs.parentNode.insertBefore(js,fjs);
+          })(window,document,'script','adealo','${loaderUrl}');
+          adealo('init', '${widgetId}');
+        `;
+        document.body.appendChild(script);
+      }
+      
+      alert('Widget loaded with ID: ' + widgetId + (useLocalServer ? ' (using local server)' : ' (using production server)'));
+    }
+    
+    // Auto-load the widget if ID is present
+    window.addEventListener('DOMContentLoaded', function() {
+      const widgetId = document.getElementById('widgetId').value.trim();
+      if (widgetId) {
+        loadWidget();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Local Loader</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .console {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 20px;
+      font-family: monospace;
+      height: 200px;
+      overflow-y: auto;
+    }
+    .console-entry {
+      margin-bottom: 5px;
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    .console-entry.log {
+      color: #333;
+    }
+    .console-entry.error {
+      color: #d32f2f;
+    }
+    .console-entry.warn {
+      color: #f57c00;
+    }
+    .console-entry.info {
+      color: #0288d1;
+    }
+    button {
+      background-color: #3A36DB;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #2a27b0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Local Loader</h1>
+  <p>This page tests the local-loader.js file by loading it and initializing the widget.</p>
+  
+  <div>
+    <button id="run-test">Run Test</button>
+    <button id="clear-console">Clear Console</button>
+  </div>
+  
+  <h2>Console Output</h2>
+  <div id="console" class="console"></div>
+  
+  <script>
+    // Override console methods to display in the console div
+    const consoleDiv = document.getElementById('console');
+    
+    // Store original console methods
+    const originalConsole = {
+      log: console.log,
+      error: console.error,
+      warn: console.warn,
+      info: console.info
+    };
+    
+    // Helper function to add entry to console div
+    function addConsoleEntry(type, args) {
+      const entry = document.createElement('div');
+      entry.className = `console-entry ${type}`;
+      entry.textContent = `[${type.toUpperCase()}] ${Array.from(args).map(arg => 
+        typeof arg === 'object' ? JSON.stringify(arg) : arg
+      ).join(' ')}`;
+      consoleDiv.appendChild(entry);
+      consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+    
+    // Override console methods
+    console.log = function() {
+      originalConsole.log.apply(console, arguments);
+      addConsoleEntry('log', arguments);
+    };
+    
+    console.error = function() {
+      originalConsole.error.apply(console, arguments);
+      addConsoleEntry('error', arguments);
+    };
+    
+    console.warn = function() {
+      originalConsole.warn.apply(console, arguments);
+      addConsoleEntry('warn', arguments);
+    };
+    
+    console.info = function() {
+      originalConsole.info.apply(console, arguments);
+      addConsoleEntry('info', arguments);
+    };
+    
+    // Handle run test button click
+    document.getElementById('run-test').addEventListener('click', function() {
+      console.log('Starting test...');
+      
+      // Load the test script
+      const script = document.createElement('script');
+      script.src = 'test-local-loader.js';
+      document.body.appendChild(script);
+    });
+    
+    // Handle clear console button click
+    document.getElementById('clear-console').addEventListener('click', function() {
+      consoleDiv.innerHTML = '';
+    });
+  </script>
+</body>
+</html>

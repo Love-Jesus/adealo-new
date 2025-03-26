@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adealo Widget - Local Development Embed</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #2563eb;
+      margin-top: 40px;
+    }
+    h2 {
+      color: #4b5563;
+      margin-top: 30px;
+    }
+    code {
+      background-color: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    pre {
+      background-color: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-top: 40px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    .highlight {
+      background-color: #dbeafe;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .warning {
+      background-color: #fee2e2;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>Adealo Widget - Local Development</h1>
+    </div>
+
+    <p>This page provides embed code for testing your Adealo Widget in a local development environment.</p>
+
+    <div class="warning">
+      <h2>Local Development Only</h2>
+      <p>The embed code on this page is for local development and testing only. It points to your local development server (<code>http://localhost:5173/loader.js</code>) instead of the production server.</p>
+      <p>For production use, use the standard embed code that points to your Firebase hosting or custom domain.</p>
+    </div>
+
+    <div class="highlight">
+      <h2>Local Widget Embed Code</h2>
+      <p>Copy and paste the following code snippet into your HTML for local testing:</p>
+      <pre><code>&lt;!-- Adealo Widget (Local Development) --&gt;
+&lt;script&gt;
+  (function(w,d,s,o,f,js,fjs){
+    w['AdealoWidget']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    w[o].l=1*new Date();js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+    js.async=1;js.src=f;fjs.parentNode.insertBefore(js,fjs);
+  })(window,document,'script','adealo','http://localhost:5173/loader.js');
+  adealo('init', '35hyPrUz5VVIQvYyelk5');
+&lt;/script&gt;
+&lt;!-- End Adealo Widget --&gt;</code></pre>
+      <p>Replace <code>35hyPrUz5VVIQvYyelk5</code> with your actual widget ID if needed.</p>
+    </div>
+
+    <h2>Local Development Setup</h2>
+    <p>To test the widget locally:</p>
+    <ol>
+      <li>Make sure your local development server is running on port 5173</li>
+      <li>Copy the <code>loader.js</code> file to your local server's public directory</li>
+      <li>Ensure your Firebase functions are deployed or emulated locally</li>
+      <li>Use the embed code above in your test pages</li>
+    </ol>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+      <li><strong>CORS Issues:</strong> If you encounter CORS errors, make sure your Firebase functions allow requests from your local domain</li>
+      <li><strong>404 Not Found:</strong> Ensure the loader.js file is correctly placed in your local server's public directory</li>
+      <li><strong>Function Errors:</strong> Check that your Firebase functions are deployed and accessible</li>
+    </ul>
+
+    <h2>Next Steps</h2>
+    <p>After testing locally, deploy your widget to Firebase hosting using the <code>deploy-widget.sh</code> script for more stable testing.</p>
+  </div>
+
+  <!-- This page intentionally does not include the widget itself to avoid confusion -->
+</body>
+</html>

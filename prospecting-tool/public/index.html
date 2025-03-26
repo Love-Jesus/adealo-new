@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adealo Widget Service</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #2563eb;
+      margin-top: 40px;
+    }
+    h2 {
+      color: #4b5563;
+      margin-top: 30px;
+    }
+    code {
+      background-color: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    pre {
+      background-color: #f1f5f9;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-top: 40px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo h1 {
+      font-size: 2.5rem;
+      margin: 0;
+    }
+    .highlight {
+      background-color: #dbeafe;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <h1>Adealo Widget Service</h1>
+    </div>
+
+    <p>This is the hosting service for the Adealo Widget system. The primary purpose of this service is to deliver the widget loader script and supporting resources to websites that have embedded the Adealo Widget.</p>
+
+    <div class="highlight">
+      <h2>Widget Embed Code</h2>
+      <p>To add the Adealo Widget to your website, copy and paste the following code snippet into your HTML:</p>
+      <pre><code>&lt;!-- Adealo Widget --&gt;
+&lt;script&gt;
+  (function(w,d,s,o,f,js,fjs){
+    w['AdealoWidget']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+    w[o].l=1*new Date();js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+    js.async=1;js.src=f;fjs.parentNode.insertBefore(js,fjs);
+  })(window,document,'script','adealo','https://adealo-ce238.web.app/loader.js');
+  adealo('init', 'YOUR_WIDGET_ID');
+&lt;/script&gt;
+&lt;!-- End Adealo Widget --&gt;</code></pre>
+      <p>Replace <code>YOUR_WIDGET_ID</code> with the unique ID of your widget.</p>
+    </div>
+
+    <h2>Resources</h2>
+    <ul>
+      <li><code>/loader.js</code> - The main widget loader script</li>
+    </ul>
+
+    <h2>For Developers</h2>
+    <p>This service is part of the Adealo Widget system, which includes:</p>
+    <ul>
+      <li>Firebase Hosting (this service)</li>
+      <li>Firebase Functions for widget script generation and interaction tracking</li>
+      <li>Firestore database for widget configuration and analytics</li>
+    </ul>
+
+    <p>For more information or support, please contact the Adealo team.</p>
+  </div>
+</body>
+</html>

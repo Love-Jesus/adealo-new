@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Widget ID Tester</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #4a6cf7;
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      color: #6e8efb;
+      margin-top: 40px;
+    }
+    
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    
+    code {
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+    
+    .note {
+      background-color: #e8f4fd;
+      padding: 15px;
+      border-left: 4px solid #2196f3;
+      margin: 20px 0;
+    }
+    
+    .error {
+      background-color: #ffebee;
+      padding: 15px;
+      border-left: 4px solid #f44336;
+      margin: 20px 0;
+    }
+    
+    .success {
+      background-color: #e8f5e9;
+      padding: 15px;
+      border-left: 4px solid #4caf50;
+      margin: 20px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    button {
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    button:hover {
+      background-color: #3a5ce5;
+    }
+    
+    #config-display {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Widget ID Tester</h1>
+  
+  <p>This tool allows you to test your widget configuration by entering a widget ID. The widget configuration will be fetched from the server and displayed below.</p>
+  
+  <div class="form-group">
+    <label for="widget-id">Widget ID:</label>
+    <input type="text" id="widget-id" placeholder="Enter your widget ID (e.g., pjxZqkQ9fAZaqIoOOJJx)" value="pjxZqkQ9fAZaqIoOOJJx">
+  </div>
+  
+  <div class="form-group">
+    <label for="api-url">API URL:</label>
+    <input type="text" id="api-url" placeholder="Enter your API URL (e.g., http://localhost:5001/adealo-ce238/us-central1)" value="http://localhost:5001/adealo-ce238/us-central1">
+  </div>
+  
+  <button id="test-widget-config">Test Widget Configuration</button>
+  
+  <div id="result"></div>
+  
+  <div id="config-display"></div>
+  
+  <div class="note">
+    <strong>Note:</strong> Make sure you have created a widget configuration in Firestore with the widget ID you enter above.
+  </div>
+  
+  <script>
+    // Widget configuration testing
+    document.getElementById('test-widget-config').addEventListener('click', function() {
+      var widgetId = document.getElementById('widget-id').value.trim();
+      var apiUrl = document.getElementById('api-url').value.trim();
+      var resultDiv = document.getElementById('result');
+      var configDisplay = document.getElementById('config-display');
+      
+      if (!widgetId) {
+        resultDiv.innerHTML = '<div class="error">Please enter a widget ID</div>';
+        return;
+      }
+      
+      if (!apiUrl) {
+        resultDiv.innerHTML = '<div class="error">Please enter an API URL</div>';
+        return;
+      }
+      
+      // Show loading indicator
+      resultDiv.innerHTML = '<div class="loader"></div>';
+      configDisplay.innerHTML = '';
+      
+      // Fetch widget configuration
+      var url = apiUrl + '/getWidgetConfigHttp?widgetId=' + widgetId;
+      
+      fetch(url)
+        .then(function(response) {
+          if (!response.ok) {
+            return response.json().then(function(errorData) {
+              throw new Error(errorData.error || 'Error fetching widget configuration');
+            });
+          }
+          return response.json();
+        })
+        .then(function(config) {
+          resultDiv.innerHTML = '<div class="success">Widget configuration found!</div>';
+          configDisplay.innerHTML = '<h2>Widget Configuration</h2><pre><code>' + JSON.stringify(config, null, 2) + '</code></pre>';
+        })
+        .catch(function(error) {
+          resultDiv.innerHTML = '<div class="error">' + error.message + '</div>';
+        });
+    });
+  </script>
+</body>
+</html>

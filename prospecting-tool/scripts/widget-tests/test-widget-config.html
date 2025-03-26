@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Test with Server-Side Configuration</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #4a6cf7;
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      color: #6e8efb;
+      margin-top: 40px;
+    }
+    
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    
+    code {
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+    
+    .highlight {
+      background-color: #fffde7;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    
+    .note {
+      background-color: #e8f4fd;
+      padding: 15px;
+      border-left: 4px solid #2196f3;
+      margin: 20px 0;
+    }
+    
+    .warning {
+      background-color: #fff8e1;
+      padding: 15px;
+      border-left: 4px solid #ffc107;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Widget Test with Server-Side Configuration</h1>
+  
+  <p>This page demonstrates how the widget can be embedded on a customer's website using server-side configuration. The widget configuration is stored on the server and loaded dynamically when the widget initializes.</p>
+  
+  <div class="note">
+    <strong>Note:</strong> This is a test page. In a production environment, the widget would be loaded from a CDN and the configuration would be stored in a database.
+  </div>
+  
+  <h2>How It Works</h2>
+  
+  <p>The widget is embedded on the customer's website using a simple script tag and a custom element:</p>
+  
+  <pre><code>&lt;script src="https://cdn.yoursaas.com/widget.js?widgetId=pjxZqkQ9fAZaqIoOOJJx"&gt;&lt;/script&gt;
+&lt;chat-widget&gt;&lt;/chat-widget&gt;</code></pre>
+  
+  <p>When the page loads, the widget script:</p>
+  
+  <ol>
+    <li>Extracts the <span class="highlight">widgetId</span> from the script URL</li>
+    <li>Fetches the widget configuration from the server using the widgetId</li>
+    <li>Caches the configuration in localStorage for future use</li>
+    <li>Renders the widget with the configuration</li>
+  </ol>
+  
+  <h2>Benefits of Server-Side Configuration</h2>
+  
+  <ul>
+    <li><strong>Security:</strong> The configuration is stored on your server, not in the customer's HTML.</li>
+    <li><strong>Scalability:</strong> You can update the configuration for all customers without requiring them to change their embed code.</li>
+    <li><strong>Privacy:</strong> Sensitive data (e.g., customerId) is not exposed in the HTML.</li>
+    <li><strong>Dynamic Updates:</strong> You can update the configuration in real-time (e.g., change colors, enable/disable features).</li>
+  </ul>
+  
+  <div class="warning">
+    <strong>Important:</strong> Make sure to use a valid widgetId in the script URL. If the widgetId is invalid, the widget will not be displayed.
+  </div>
+  
+  <h2>Live Demo</h2>
+  
+  <p>The widget is embedded on this page. Click the launcher button in the bottom-right corner to open the widget.</p>
+  
+  <!-- Widget Embed Code -->
+  <script src="local-widget-loader.js?widgetId=pjxZqkQ9fAZaqIoOOJJx"></script>
+  <chat-widget></chat-widget>
+  
+  <h2>How to Test</h2>
+  
+  <p>To test the widget with server-side configuration:</p>
+  
+  <ol>
+    <li>Run the <code>run-test-widget-config.sh</code> script to start a local server</li>
+    <li>Open <a href="http://localhost:8000/test-widget-config.html">http://localhost:8000/test-widget-config.html</a> in your browser</li>
+    <li>Click the launcher button in the bottom-right corner to open the widget</li>
+    <li>Test the different features of the widget</li>
+  </ol>
+  
+  <p>To deploy the widget configuration functions to Firebase:</p>
+  
+  <ol>
+    <li>Run the <code>deploy-widget-config-functions.sh</code> script</li>
+    <li>Wait for the deployment to complete</li>
+    <li>Test the widget with the deployed functions</li>
+  </ol>
+  
+  <div class="note">
+    <strong>Note:</strong> The widget configuration is stored in Firestore. You can update the configuration in the Firebase console or through the widget editor in the admin dashboard.
+  </div>
+  
+  <h2>Configuration Example</h2>
+  
+  <p>Here's an example of the configuration that is stored on the server:</p>
+  
+  <pre><code>{
+  "base": {
+    "widgetId": "pjxZqkQ9fAZaqIoOOJJx",
+    "teamId": "team123",
+    "name": "Demo Widget",
+    "status": "active",
+    "createdAt": "2025-03-21T00:00:00.000Z",
+    "updatedAt": "2025-03-21T00:00:00.000Z"
+  },
+  "design": {
+    "colors": {
+      "primary": "#6e8efb",
+      "secondary": "#4a6cf7",
+      "text": "#333333",
+      "background": "#ffffff"
+    },
+    "position": "bottom-right",
+    "theme": "light",
+    "borderRadius": 16,
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
+  },
+  "features": {
+    "chat": {
+      "enabled": true,
+      "greeting": "Hi there! 👋",
+      "teamName": "Our Team",
+      "agentName": "Support"
+    },
+    "bookDemo": {
+      "enabled": true,
+      "calendlyUrl": "https://calendly.com/your-company/30min",
+      "title": "Book a Demo",
+      "description": "Schedule a time with our team to see our product in action."
+    },
+    "callMe": {
+      "enabled": true,
+      "mode": "single",
+      "responseType": "asap",
+      "qualificationEnabled": true,
+      "qualificationOptions": [
+        {
+          "id": "sales",
+          "label": "Sales Inquiry",
+          "description": "I want to learn more about your product",
+          "icon": "💼"
+        }
+      ],
+      "team": {
+        "members": [
+          {
+            "id": "agent1",
+            "name": "John Doe",
+            "role": "Sales Representative",
+            "avatar": ""
+          }
+        ],
+        "displayMode": "grid"
+      },
+      "messages": {
+        "title": "Request a Call",
+        "description": "Enter your phone number and we'll call you shortly.",
+        "asapMessage": "We'll call you as soon as possible.",
+        "fixedTimeMessage": "We'll call you within {time} minutes.",
+        "qualificationPrompt": "How can we help you?"
+      }
+    }
+  },
+  "content": {
+    "greeting": "Hello!",
+    "tagline": "How can we help?",
+    "labels": {
+      "chat": "Chat with us",
+      "bookDemo": "Book a demo",
+      "callMe": "Request a call"
+    }
+  },
+  "stats": {
+    "views": 0,
+    "interactions": 0,
+    "leads": 0,
+    "lastUpdated": "2025-03-21T00:00:00.000Z"
+  },
+  "chatConfig": {
+    "offlineMessage": "We're currently offline. Please leave a message and we'll get back to you as soon as possible.",
+    "inputPlaceholder": "Type your message...",
+    "useAI": false,
+    "showAgentNames": true,
+    "showAgentAvatars": true,
+    "fileAttachmentsEnabled": false
+  },
+  "type": "MultiWidget"
+}</code></pre>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "prospecting-tool-tests",
+  "version": "1.0.0",
+  "description": "Test scripts for the prospecting tool",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

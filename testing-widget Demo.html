@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget Demo - Server-Side Configuration</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #6e8efb;
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #4a6cf7;
+      margin-top: 30px;
+    }
+    .card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    pre {
+      background-color: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 15px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 14px;
+    }
+    .button {
+      background-color: #6e8efb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .button:hover {
+      background-color: #4a6cf7;
+    }
+    .tab {
+      display: inline-block;
+      padding: 10px 15px;
+      cursor: pointer;
+      border: 1px solid #e0e0e0;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      background-color: #f9f9f9;
+      margin-right: 5px;
+    }
+    .tab.active {
+      background-color: white;
+      border-bottom: 2px solid white;
+      margin-bottom: -1px;
+      font-weight: bold;
+      color: #6e8efb;
+    }
+    .tab-content {
+      border: 1px solid #e0e0e0;
+      border-radius: 0 4px 4px 4px;
+      padding: 20px;
+      background-color: white;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Widget Demo - Server-Side Configuration</h1>
+  
+  <div class="card">
+    <h2>A Better Approach: Server-Side Configuration</h2>
+    <p>Instead of embedding the configuration in the HTML, we store the configuration on your server and load it dynamically when the widget initializes.</p>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('tab1')">Step 1: Store Configuration</div>
+      <div class="tab" onclick="switchTab('tab2')">Step 2: Create API Endpoint</div>
+      <div class="tab" onclick="switchTab('tab3')">Step 3: Modify Widget</div>
+      <div class="tab" onclick="switchTab('tab4')">Step 4: Update Embed Code</div>
+    </div>
+    
+    <div id="tab1" class="tab-content">
+      <h3>Store Configuration on Your Server</h3>
+      <p>Store each customer's configuration in your database (e.g., Firebase Firestore, PostgreSQL).</p>
+      <pre><code>{
+  "widgetId": "WnwIUWLRHxM09A6EYJPY",
+  "type": "MultiWidget",
+  "greeting": "Hello! How can we help you?",
+  "primaryColor": "#6e8efb",
+  "features": {
+    "chat": true,
+    "booking": true,
+    "call": false
+  },
+  "bookingUrl": "https://calendly.com/your-company/30min",
+  "chatConfig": {
+    "offlineMessage": "We're currently offline. Leave a message and we'll get back to you soon.",
+    "inputPlaceholder": "Type your message...",
+    "useAI": true,
+    "teamName": "Support Team",
+    "responseTime": "Usually responds in a few minutes"
+  }
+}</code></pre>
+    </div>
+    
+    <div id="tab2" class="tab-content hidden">
+      <h3>Create an API Endpoint</h3>
+      <p>Create an API endpoint to fetch the configuration for a specific customer.</p>
+      <pre><code>GET /api/widget-config?widgetId=WnwIUWLRHxM09A6EYJPY</code></pre>
+      <p>Response:</p>
+      <pre><code>{
+  "widgetId": "WnwIUWLRHxM09A6EYJPY",
+  "type": "MultiWidget",
+  "greeting": "Hello! How can we help you?",
+  "primaryColor": "#6e8efb",
+  "features": {
+    "chat": true,
+    "booking": true,
+    "call": false
+  },
+  "bookingUrl": "https://calendly.com/your-company/30min",
+  "chatConfig": {
+    "offlineMessage": "We're currently offline. Leave a message and we'll get back to you soon.",
+    "inputPlaceholder": "Type your message...",
+    "useAI": true,
+    "teamName": "Support Team",
+    "responseTime": "Usually responds in a few minutes"
+  }
+}</code></pre>
+    </div>
+    
+    <div id="tab3" class="tab-content hidden">
+      <h3>Modify the Widget to Fetch Configuration</h3>
+      <p>Update the widget to fetch the configuration from your API instead of reading it from window.widgetConfig.</p>
+      <pre><code>import React, { useState, useEffect } from 'react';
+import LauncherButton from './LauncherButton';
+import HomeScreen from './HomeScreen';
+import ChatScreen from './ChatScreen';
+import BookDemoScreen from './BookDemoScreen';
+import CallMeScreen from './CallMeScreen';
+import { trackEvent } from '../../analytics';
+import './styles.css';
+
+const App = () => {
+  const [config, setConfig] = useState(null);
+  const [activeScreen, setActiveScreen] = useState('home');
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    // Fetch configuration from your API
+    const fetchConfig = async () => {
+      const widgetId = new URLSearchParams(window.location.search).get('widgetId');
+      const response = await fetch(`https://your-saas.com/api/widget-config?widgetId=${widgetId}`);
+      const data = await response.json();
+      
+      // Validate that we have a MultiWidget type
+      if (!data.type || data.type !== 'MultiWidget') {
+        console.warn('Widget configuration is missing type or is not a MultiWidget');
+        data.type = 'MultiWidget'; // Set default type
+      }
+      
+      // Ensure chatConfig exists
+      if (!data.chatConfig) {
+        data.chatConfig = {
+          offlineMessage: "We're currently offline. Leave a message and we'll get back to you soon.",
+          inputPlaceholder: "Type your message...",
+          useAI: true,
+          teamName: "Support Team",
+          responseTime: "Usually responds in a few minutes"
+        };
+      }
+      
+      setConfig(data);
+    };
+
+    fetchConfig();
+  }, []);
+
+  if (!config) {
+    return <div>Loading...</div>; // Show a loader while fetching config
+  }
+
+  const handleLauncherClick = () => {
+    setIsOpen(!isOpen);
+    trackEvent('widget_toggle', { widgetId: config.widgetId, isOpen: !isOpen });
+  };
+
+  const handleBack = () => {
+    setActiveScreen('home');
+    trackEvent('navigate_home', { widgetId: config.widgetId });
+  };
+
+  return (
+    <div id="intercom-container">
+      <LauncherButton onClick={handleLauncherClick} isOpen={isOpen} />
+      {isOpen && (
+        <div className="messenger-container">
+          {activeScreen === 'home' && (
+            <HomeScreen
+              config={config}
+              onNavigate={setActiveScreen}
+            />
+          )}
+          {activeScreen === 'chat' && (
+            <ChatScreen 
+              config={config}
+              chatConfig={config.chatConfig}
+              onBack={handleBack} 
+            />
+          )}
+          {activeScreen === 'book-demo' && (
+            <BookDemoScreen 
+              config={config}
+              onBack={handleBack} 
+            />
+          )}
+          {activeScreen === 'call-me' && (
+            <CallMeScreen 
+              config={config}
+              onBack={handleBack} 
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};</code></pre>
+    </div>
+    
+    <div id="tab4" class="tab-content hidden">
+      <h3>Update the Embed Code</h3>
+      <p>Instead of embedding the configuration in the HTML, provide a simple embed code that includes only the widgetId.</p>
+      <pre><code>&lt;script src="https://cdn.yoursaas.com/widget.js?widgetId=WnwIUWLRHxM09A6EYJPY"&gt;&lt;/script&gt;</code></pre>
+      
+      <h3>Modify the Web Component Wrapper</h3>
+      <p>Update the web component wrapper to pass the customerId to the React app.</p>
+      <pre><code>import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/widget/App';
+
+class ChatWidget extends HTMLElement {
+  connectedCallback() {
+    const mountPoint = document.createElement('div');
+    this.attachShadow({ mode: 'open' }).appendChild(mountPoint);
+
+    // Get widgetId from the script URL
+    const scriptUrl = document.currentScript.src;
+    const urlParams = new URLSearchParams(scriptUrl.split('?')[1]);
+    const widgetId = urlParams.get('widgetId');
+
+    ReactDOM.render(<App widgetId={widgetId} />, mountPoint);
+  }
+}
+
+customElements.define('chat-widget', ChatWidget);</code></pre>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h2>Benefits of Server-Side Configuration</h2>
+    <ul>
+      <li><strong>Security:</strong> The configuration is stored on your server, not in the customer's HTML.</li>
+      <li><strong>Scalability:</strong> You can update the configuration for all customers without requiring them to change their embed code.</li>
+      <li><strong>Privacy:</strong> Sensitive data (e.g., widgetId) is not exposed in the HTML.</li>
+      <li><strong>Dynamic Updates:</strong> You can update the configuration in real-time (e.g., change colors, enable/disable features).</li>
+    </ul>
+  </div>
+  
+  <div class="card">
+    <h2>Live Demo</h2>
+    <p>This page includes a live demo of the widget with server-side configuration. The widget is loaded with the widgetId "demo-123".</p>
+    
+    <button class="button" onclick="loadWidget()">Load Widget</button>
+    <div id="widget-container"></div>
+  </div>
+  
+  <script>
+    // Switch tabs
+    function switchTab(tabId) {
+      // Hide all tab contents
+      const tabContents = document.querySelectorAll('.tab-content');
+      tabContents.forEach(content => {
+        content.classList.add('hidden');
+      });
+      
+      // Deactivate all tabs
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected tab content
+      document.getElementById(tabId).classList.remove('hidden');
+      
+      // Activate selected tab
+      const selectedTab = document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`);
+      selectedTab.classList.add('active');
+    }
+    
+    // Load widget
+    function loadWidget() {
+      const container = document.getElementById('widget-container');
+      
+      // Clear previous widget
+      container.innerHTML = '';
+      
+      // Create script element
+      const script = document.createElement('script');
+      script.src = 'https://widget.adealo.com/widget-loader.js?widgetId=demo-123';
+      script.async = true;
+      
+      // Append script to container
+      container.appendChild(script);
+      
+      // Update button text
+      document.querySelector('.button').textContent = 'Widget Loaded';
+      document.querySelector('.button').disabled = true;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Chat Widget Test (Production)</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #4F46E5;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .left-panel {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .right-panel {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .debug-console {
+            background-color: #1e1e1e;
+            color: #ddd;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 15px;
+            border-radius: 6px;
+            height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .debug-console .info {
+            color: #64b5f6;
+        }
+        .debug-console .success {
+            color: #81c784;
+        }
+        .debug-console .error {
+            color: #e57373;
+        }
+        .debug-console .warning {
+            color: #ffb74d;
+        }
+        button {
+            background-color: #4F46E5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #4338CA;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .timestamp {
+            color: #9e9e9e;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real Chat Widget Test (Production)</h1>
+    
+    <div class="container">
+        <div class="left-panel">
+            <h2>Test Controls</h2>
+            
+            <div class="form-group">
+                <label for="widgetId">Widget ID:</label>
+                <input type="text" id="widgetId" value="WnwIUWLRHxM09A6EYJPY" placeholder="Enter widget ID">
+            </div>
+            
+            <div class="form-group">
+                <label for="visitorName">Visitor Name:</label>
+                <input type="text" id="visitorName" value="Test Visitor" placeholder="Enter visitor name">
+            </div>
+            
+            <div class="form-group">
+                <label for="visitorEmail">Visitor Email:</label>
+                <input type="email" id="visitorEmail" value="visitor@example.com" placeholder="Enter visitor email">
+            </div>
+            
+            <div class="form-group">
+                <label for="visitorCompany">Visitor Company:</label>
+                <input type="text" id="visitorCompany" value="Test Company" placeholder="Enter visitor company">
+            </div>
+            
+            <div class="form-group">
+                <label for="teamId">Team ID:</label>
+                <input type="text" id="teamId" value="default" placeholder="Enter team ID">
+            </div>
+            
+            <div class="button-group">
+                <button id="initChatButton">Initialize Chat</button>
+                <button id="clearConsoleButton">Clear Console</button>
+            </div>
+            
+            <div class="debug-console" id="debugConsole"></div>
+        </div>
+        
+        <div class="right-panel">
+            <h2>Widget Preview</h2>
+            <p>The chat widget should appear in the bottom-right corner of this panel.</p>
+            <div id="widgetContainer" style="position: relative; height: 500px; border: 1px dashed #ccc; border-radius: 8px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Debug console functionality
+        const debugConsole = document.getElementById('debugConsole');
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<span class="timestamp">[${timestamp}]</span> <span class="${type}">${message}</span>`;
+            debugConsole.appendChild(logEntry);
+            debugConsole.scrollTop = debugConsole.scrollHeight;
+        }
+        
+        // Clear console button
+        document.getElementById('clearConsoleButton').addEventListener('click', () => {
+            debugConsole.innerHTML = '';
+            log('Console cleared', 'info');
+        });
+        
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyARUEAaE6vCiBT9qtPZ1T7DQV63Ux4zdu8",
+            authDomain: "adealo-ce238.firebaseapp.com",
+            databaseURL: "https://adealo-ce238-default-rtdb.firebaseio.com",
+            projectId: "adealo-ce238",
+            storageBucket: "adealo-ce238.appspot.com",
+            messagingSenderId: "496668539325",
+            appId: "1:496668539325:web:db9a5a4e223c6b11c67ad4",
+            measurementId: "G-5Z4MHSWZ8N",
+        };
+        
+        // Initialize Firebase with production configuration
+        firebase.initializeApp(firebaseConfig);
+        
+        log('Firebase initialized with production configuration', 'success');
+        
+        // Global variables
+        let currentConversationId = null;
+        let unsubscribeListener = null;
+        
+        // Initialize chat button
+        document.getElementById('initChatButton').addEventListener('click', async () => {
+            try {
+                // Get values from form
+                const widgetId = document.getElementById('widgetId').value.trim();
+                const visitorName = document.getElementById('visitorName').value.trim();
+                const visitorEmail = document.getElementById('visitorEmail').value.trim();
+                const visitorCompany = document.getElementById('visitorCompany').value.trim();
+                const teamId = document.getElementById('teamId').value.trim();
+                
+                if (!widgetId) {
+                    throw new Error('Widget ID is required');
+                }
+                
+                log(`Initializing chat with widget ID: ${widgetId}`, 'info');
+                
+                // Sign in anonymously
+                await firebase.auth().signInAnonymously();
+                log('Signed in anonymously', 'success');
+                
+                // Create a conversation
+                const conversationId = await createConversation(widgetId, {
+                    name: visitorName,
+                    email: visitorEmail,
+                    company: visitorCompany,
+                    ip: '127.0.0.1',
+                    userAgent: navigator.userAgent
+                }, teamId);
+                
+                currentConversationId = conversationId;
+                log(`Conversation created with ID: ${conversationId}`, 'success');
+                
+                // Start listening for messages
+                startMessageListener(conversationId);
+                
+                // Create the chat widget
+                createChatWidget(conversationId);
+                
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        });
+        
+        // Create a conversation in Firestore
+        async function createConversation(widgetId, visitor, teamId) {
+            const db = firebase.firestore();
+            const now = firebase.firestore.FieldValue.serverTimestamp();
+            
+            const conversationData = {
+                widgetId,
+                teamId,
+                status: 'active',
+                createdAt: now,
+                updatedAt: now,
+                lastMessageAt: now,
+                visitor,
+                aiEnabled: true
+            };
+            
+            const docRef = await db.collection('chatConversations').add(conversationData);
+            return docRef.id;
+        }
+        
+        // Start listening for messages
+        function startMessageListener(conversationId) {
+            const db = firebase.firestore();
+            
+            // Unsubscribe from previous listener if exists
+            if (unsubscribeListener) {
+                unsubscribeListener();
+            }
+            
+            // Listen for messages in real-time
+            unsubscribeListener = db.collection(`chatConversations/${conversationId}/messages`)
+                .orderBy('timestamp', 'asc')
+                .onSnapshot((snapshot) => {
+                    snapshot.docChanges().forEach((change) => {
+                        if (change.type === 'added') {
+                            const message = change.doc.data();
+                            
+                            // Only process messages from agents (not our own messages)
+                            if (message.sender === 'agent' || message.sender === 'ai') {
+                                log(`Received message from ${message.sender}: ${message.text}`, 'info');
+                                
+                                // Add message to the chat UI
+                                addAgentMessageToUI(message);
+                            }
+                        }
+                    });
+                }, (error) => {
+                    log(`Error listening for messages: ${error.message}`, 'error');
+                });
+            
+            log(`Started listening for messages in conversation: ${conversationId}`, 'success');
+        }
+        
+        // Send a message to Firestore
+        async function sendMessage(conversationId, text) {
+            if (!conversationId || !text.trim()) {
+                log('Cannot send message: Missing conversation ID or message text', 'error');
+                return;
+            }
+            
+            try {
+                const db = firebase.firestore();
+                const now = firebase.firestore.FieldValue.serverTimestamp();
+                
+                // Create message document
+                const messageData = {
+                    conversationId,
+                    text,
+                    sender: 'user',
+                    senderId: firebase.auth().currentUser.uid,
+                    timestamp: now,
+                    isRead: false,
+                    isInternal: false
+                };
+                
+                // Add message to conversation
+                await db.collection(`chatConversations/${conversationId}/messages`).add(messageData);
+                
+                // Update conversation with last message info
+                await db.collection('chatConversations').doc(conversationId).update({
+                    lastMessage: text,
+                    lastMessageSender: 'user',
+                    lastMessageAt: now,
+                    updatedAt: now
+                });
+                
+                log(`Message sent: ${text}`, 'success');
+                return true;
+            } catch (error) {
+                log(`Error sending message: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        // Add agent message to UI
+        function addAgentMessageToUI(message) {
+            const messagesContainer = document.getElementById('adealo-chat-messages');
+            if (!messagesContainer) return;
+            
+            // Create agent message container
+            const responseContainer = document.createElement('div');
+            responseContainer.style.display = 'flex';
+            responseContainer.style.alignItems = 'flex-start';
+            responseContainer.style.marginBottom = '15px';
+            
+            // Create agent avatar
+            const agentAvatar = document.createElement('div');
+            agentAvatar.innerHTML = `
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="16" fill="#4F46E5"/>
+                    <path d="M16 16C18.21 16 20 14.21 20 12C20 9.79 18.21 8 16 8C13.79 8 12 9.79 12 12C12 14.21 13.79 16 16 16ZM16 18C13.33 18 8 19.34 8 22V24H24V22C24 19.34 18.67 18 16 18Z" fill="white"/>
+                </svg>
+            `;
+            agentAvatar.style.marginRight = '8px';
+            agentAvatar.style.flexShrink = '0';
+            
+            // Create message content
+            const responseMessage = document.createElement('div');
+            responseMessage.className = 'adealo-bot-message';
+            responseMessage.style.backgroundColor = 'white';
+            responseMessage.style.borderRadius = '12px';
+            responseMessage.style.padding = '12px 16px';
+            responseMessage.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
+            responseMessage.style.maxWidth = 'calc(100% - 40px)';
+            
+            // Format timestamp
+            const timestamp = message.timestamp?.toDate ? message.timestamp.toDate() : new Date();
+            const timeString = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            responseMessage.innerHTML = `
+                <p style="margin: 0 0 8px 0; font-weight: 600;">${message.senderName || (message.sender === 'ai' ? 'AI Assistant' : 'Support Agent')}</p>
+                <p style="margin: 0; color: #4B5563;">${message.text}</p>
+                <p style="margin: 4px 0 0 0; font-size: 0.8em; color: #9e9e9e; text-align: right;">${timeString}</p>
+            `;
+            
+            responseContainer.appendChild(agentAvatar);
+            responseContainer.appendChild(responseMessage);
+            messagesContainer.appendChild(responseContainer);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Create the chat widget UI
+        function createChatWidget(conversationId) {
+            // Clear any existing widget
+            const widgetContainer = document.getElementById('widgetContainer');
+            widgetContainer.innerHTML = '';
+            
+            log('Creating chat widget UI', 'info');
+            
+            // Add custom styles to the document
+            const styleElement = document.createElement('style');
+            styleElement.textContent = `
+                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+                
+                #adealo-chat-widget-container * {
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    box-sizing: border-box;
+                }
+                
+                #adealo-chat-button {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+                
+                #adealo-chat-button:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+                }
+                
+                #adealo-chat-panel {
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                    opacity: 0;
+                    transform: translateY(20px);
+                    pointer-events: none;
+                }
+                
+                #adealo-chat-panel.visible {
+                    opacity: 1;
+                    transform: translateY(0);
+                    pointer-events: all;
+                }
+                
+                .adealo-user-message {
+                    animation: slideInRight 0.3s ease;
+                }
+                
+                .adealo-bot-message {
+                    animation: slideInLeft 0.3s ease;
+                }
+                
+                @keyframes slideInRight {
+                    from { transform: translateX(20px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                
+                @keyframes slideInLeft {
+                    from { transform: translateX(-20px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(styleElement);
+            
+            // Create widget container
+            const adealoWidgetContainer = document.createElement('div');
+            adealoWidgetContainer.id = 'adealo-chat-widget-container';
+            adealoWidgetContainer.style.position = 'absolute';
+            adealoWidgetContainer.style.bottom = '20px';
+            adealoWidgetContainer.style.right = '20px';
+            adealoWidgetContainer.style.zIndex = '9999';
+            widgetContainer.appendChild(adealoWidgetContainer);
+            
+            // Create the chat button with a modern design
+            const chatButton = document.createElement('button');
+            chatButton.id = 'adealo-chat-button';
+            chatButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+            `;
+            chatButton.style.width = '60px';
+            chatButton.style.height = '60px';
+            chatButton.style.borderRadius = '50%';
+            chatButton.style.backgroundColor = '#3A36DB';
+            chatButton.style.color = 'white';
+            chatButton.style.border = 'none';
+            chatButton.style.cursor = 'pointer';
+            chatButton.style.display = 'flex';
+            chatButton.style.alignItems = 'center';
+            chatButton.style.justifyContent = 'center';
+            chatButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+            adealoWidgetContainer.appendChild(chatButton);
+            
+            // Create the chat panel with improved design
+            const chatPanel = document.createElement('div');
+            chatPanel.id = 'adealo-chat-panel';
+            chatPanel.style.position = 'absolute';
+            chatPanel.style.bottom = '70px';
+            chatPanel.style.right = '0';
+            chatPanel.style.width = '350px';
+            chatPanel.style.height = '450px';
+            chatPanel.style.backgroundColor = 'white';
+            chatPanel.style.borderRadius = '12px';
+            chatPanel.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.15)';
+            chatPanel.style.display = 'flex';
+            chatPanel.style.flexDirection = 'column';
+            chatPanel.style.overflow = 'hidden';
+            adealoWidgetContainer.appendChild(chatPanel);
+            
+            // Chat panel header with gradient background
+            const chatHeader = document.createElement('div');
+            chatHeader.style.background = 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)';
+            chatHeader.style.color = 'white';
+            chatHeader.style.padding = '15px';
+            chatHeader.style.display = 'flex';
+            chatHeader.style.justifyContent = 'space-between';
+            chatHeader.style.alignItems = 'center';
+            chatHeader.style.borderTopLeftRadius = '12px';
+            chatHeader.style.borderTopRightRadius = '12px';
+            chatPanel.appendChild(chatHeader);
+            
+            // Add company logo and name
+            const headerLeft = document.createElement('div');
+            headerLeft.style.display = 'flex';
+            headerLeft.style.alignItems = 'center';
+            
+            const logo = document.createElement('div');
+            logo.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="24" height="24" rx="12" fill="white"/>
+                    <path d="M7 14.5l5-5 5 5" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+            logo.style.marginRight = '8px';
+            
+            const chatTitle = document.createElement('h3');
+            chatTitle.textContent = 'Adealo Support';
+            chatTitle.style.margin = '0';
+            chatTitle.style.fontSize = '16px';
+            chatTitle.style.fontWeight = '600';
+            
+            headerLeft.appendChild(logo);
+            headerLeft.appendChild(chatTitle);
+            chatHeader.appendChild(headerLeft);
+            
+            // Close button with improved design
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+            closeButton.style.background = 'rgba(255, 255, 255, 0.2)';
+            closeButton.style.border = 'none';
+            closeButton.style.color = 'white';
+            closeButton.style.width = '28px';
+            closeButton.style.height = '28px';
+            closeButton.style.borderRadius = '50%';
+            closeButton.style.display = 'flex';
+            closeButton.style.alignItems = 'center';
+            closeButton.style.justifyContent = 'center';
+            closeButton.style.cursor = 'pointer';
+            closeButton.style.transition = 'background 0.2s ease';
+            chatHeader.appendChild(closeButton);
+            
+            // Chat messages container with subtle background
+            const messagesContainer = document.createElement('div');
+            messagesContainer.id = 'adealo-chat-messages';
+            messagesContainer.style.flex = '1';
+            messagesContainer.style.padding = '15px';
+            messagesContainer.style.overflowY = 'auto';
+            messagesContainer.style.background = '#f9f9fb';
+            chatPanel.appendChild(messagesContainer);
+            
+            // Welcome message with agent avatar
+            const welcomeMessageContainer = document.createElement('div');
+            welcomeMessageContainer.style.display = 'flex';
+            welcomeMessageContainer.style.alignItems = 'flex-start';
+            welcomeMessageContainer.style.marginBottom = '15px';
+            
+            const agentAvatar = document.createElement('div');
+            agentAvatar.innerHTML = `
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="32" height="32" rx="16" fill="#4F46E5"/>
+                    <path d="M16 16C18.21 16 20 14.21 20 12C20 9.79 18.21 8 16 8C13.79 8 12 9.79 12 12C12 14.21 13.79 16 16 16ZM16 18C13.33 18 8 19.34 8 22V24H24V22C24 19.34 18.67 18 16 18Z" fill="white"/>
+                </svg>
+            `;
+            agentAvatar.style.marginRight = '8px';
+            agentAvatar.style.flexShrink = '0';
+            
+            const welcomeMessage = document.createElement('div');
+            welcomeMessage.className = 'adealo-bot-message';
+            welcomeMessage.style.backgroundColor = 'white';
+            welcomeMessage.style.borderRadius = '12px';
+            welcomeMessage.style.padding = '12px 16px';
+            welcomeMessage.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.05)';
+            welcomeMessage.style.maxWidth = 'calc(100% - 40px)';
+            welcomeMessage.innerHTML = `
+                <p style="margin: 0 0 8px 0; font-weight: 600;">Sarah from Adealo</p>
+                <p style="margin: 0; color: #4B5563;">Hi there! 👋 How can I help you today?</p>
+            `;
+            
+            welcomeMessageContainer.appendChild(agentAvatar);
+            welcomeMessageContainer.appendChild(welcomeMessage);
+            messagesContainer.appendChild(welcomeMessageContainer);
+            
+            // Chat input area with modern design
+            const inputArea = document.createElement('div');
+            inputArea.style.borderTop = '1px solid #eee';
+            inputArea.style.padding = '15px';
+            inputArea.style.display = 'flex';
+            inputArea.style.backgroundColor = 'white';
+            chatPanel.appendChild(inputArea);
+            
+            // Improved input field
+            const chatInput = document.createElement('input');
+            chatInput.type = 'text';
+            chatInput.placeholder = 'Type your message...';
+            chatInput.style.flex = '1';
+            chatInput.style.padding = '12px 16px';
+            chatInput.style.border = '1px solid #e5e7eb';
+            chatInput.style.borderRadius = '8px';
+            chatInput.style.marginRight = '10px';
+            chatInput.style.fontSize = '14px';
+            chatInput.style.outline = 'none';
+            chatInput.style.transition = 'border-color 0.2s ease';
+            inputArea.appendChild(chatInput);
+            
+            // Focus effect for input
+            chatInput.addEventListener('focus', function() {
+                this.style.borderColor = '#4F46E5';
+                this.style.boxShadow = '0 0 0 2px rgba(79, 70, 229, 0.1)';
+            });
+            
+            chatInput.addEventListener('blur', function() {
+                this.style.borderColor = '#e5e7eb';
+                this.style.boxShadow = 'none';
+            });
+            
+            // Modern send button
+            const sendButton = document.createElement('button');
+            sendButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            `;
+            sendButton.style.backgroundColor = '#4F46E5';
+            sendButton.style.color = 'white';
+            sendButton.style.border = 'none';
+            sendButton.style.borderRadius = '8px';
+            sendButton.style.width = '40px';
+            sendButton.style.height = '40px';
+            sendButton.style.display = 'flex';
+            sendButton.style.alignItems = 'center';
+            sendButton.style.justifyContent = 'center';
+            sendButton.style.cursor = 'pointer';
+            sendButton.style.transition = 'background-color 0.2s ease';
+            inputArea.appendChild(sendButton);
+            
+            // Hover effect for send button
+            sendButton.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#4338CA';
+            });
+            
+            sendButton.addEventListener('mouseout', function() {
+                this.style.backgroundColor = '#4F46E5';
+            });
+            
+            // Initially hide the chat panel with animation support
+            chatPanel.style.display = 'none';
+            
+            // Toggle chat panel when button is clicked
+            chatButton.addEventListener('click', function() {
+                log('Chat button clicked', 'info');
+                if (chatPanel.style.display === 'none') {
+                    chatPanel.style.display = 'flex';
+                    // Trigger animation after display change
+                    setTimeout(() => {
+                        chatPanel.classList.add('visible');
+                    }, 10);
+                } else {
+                    chatPanel.classList.remove('visible');
+                    // Hide after animation completes
+                    setTimeout(() => {
+                        chatPanel.style.display = 'none';
+                    }, 300);
+                }
+            });
+            
+            // Close chat panel when close button is clicked
+            closeButton.addEventListener('click', function() {
+                log('Close button clicked', 'info');
+                chatPanel.classList.remove('visible');
+                // Hide after animation completes
+                setTimeout(() => {
+                    chatPanel.style.display = 'none';
+                }, 300);
+            });
+            
+            // Send message when send button is clicked
+            sendButton.addEventListener('click', function() {
+                handleSendMessage();
+            });
+            
+            // Send message when Enter key is pressed
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSendMessage();
+                }
+            });
+            
+            // Handle send message function
+            function handleSendMessage() {
+                const message = chatInput.value.trim();
+                if (message && currentConversationId) {
+                    // Create user message with modern design
+                    const userMessageContainer = document.createElement('div');
+                    userMessageContainer.style.display = 'flex';
+                    userMessageContainer.style.justifyContent = 'flex-end';
+                    userMessageContainer.style.marginBottom = '15px';
+                    
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'adealo-user-message';
+                    userMessage.style.backgroundColor = '#4F46E5';
+                    userMessage.style.color = 'white';
+                    userMessage.style.borderRadius = '12px';
+                    userMessage.style.padding = '12px 16px';
+                    userMessage.style.maxWidth = '80%';
+                    userMessage.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                    userMessage.textContent = message;
+                    
+                    userMessageContainer.appendChild(userMessage);
+                    messagesContainer.appendChild(userMessageContainer);
+                    
+                    // Clear input
+                    chatInput.value = '';
+                    
+                    // Scroll to bottom
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    
+                    // Send message to Firestore
+                    sendMessage(currentConversationId, message);
+                }
+            }
+            
+            // Show the chat panel initially
+            setTimeout(() => {
+                chatButton.click();
+            }, 500);
+            
+            log('Chat widget created successfully', 'success');
+        }
+    </script>
+</body>
+</html>

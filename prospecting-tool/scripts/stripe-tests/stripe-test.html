@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Integration Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .test-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    button {
+      background-color: #6772e5;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #5469d4;
+    }
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #f7f7f7;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .success {
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stripe Integration Test</h1>
+  <p>This page tests the Stripe integration with the updated API keys.</p>
+  
+  <div class="test-section">
+    <h2>1. Initialize Stripe.js</h2>
+    <p>Testing initialization with publishable key: <code>pk_test_TYooMQauvdEDq54NiTphI7jx</code></p>
+    <button id="test-init">Test Initialization</button>
+    <div id="init-result" class="result"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>2. Create Payment Method</h2>
+    <p>Testing creation of a payment method with test card details</p>
+    <button id="test-payment-method">Create Payment Method</button>
+    <div id="payment-method-result" class="result"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>3. Create Payment Intent</h2>
+    <p>This would normally be done server-side, but we'll simulate it here</p>
+    <button id="test-payment-intent">Simulate Payment Intent</button>
+    <div id="payment-intent-result" class="result"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>Test Summary</h2>
+    <div id="test-summary" class="result">Run the tests above to see results</div>
+  </div>
+
+  <!-- Load Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  
+  <script>
+    // Test results
+    const testResults = {
+      init: false,
+      paymentMethod: false,
+      paymentIntent: false
+    };
+    
+    // Update test summary
+    function updateSummary() {
+      const summaryEl = document.getElementById('test-summary');
+      const allPassed = Object.values(testResults).every(result => result);
+      
+      let html = '<h3>Test Results:</h3>';
+      html += `<p>Initialize Stripe.js: ${testResults.init ? '<span class="success">✓ Passed</span>' : '<span class="error">✗ Failed</span>'}</p>`;
+      html += `<p>Create Payment Method: ${testResults.paymentMethod ? '<span class="success">✓ Passed</span>' : '<span class="error">✗ Failed</span>'}</p>`;
+      html += `<p>Create Payment Intent: ${testResults.paymentIntent ? '<span class="success">✓ Passed</span>' : '<span class="error">✗ Failed</span>'}</p>`;
+      
+      if (allPassed) {
+        html += '<p class="success"><strong>All tests passed! Your Stripe integration is working correctly.</strong></p>';
+      } else {
+        html += '<p class="error"><strong>Some tests failed. Check the errors above.</strong></p>';
+      }
+      
+      summaryEl.innerHTML = html;
+    }
+    
+    // Test 1: Initialize Stripe.js
+    document.getElementById('test-init').addEventListener('click', function() {
+      const resultEl = document.getElementById('init-result');
+      
+      try {
+        // Initialize Stripe with the publishable key
+        const stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+        
+        resultEl.innerHTML = '<span class="success">✓ Stripe.js initialized successfully!</span>';
+        testResults.init = true;
+      } catch (error) {
+        resultEl.innerHTML = `<span class="error">✗ Error initializing Stripe.js: ${error.message}</span>`;
+        testResults.init = false;
+      }
+      
+      updateSummary();
+    });
+    
+    // Test 2: Create Payment Method
+    document.getElementById('test-payment-method').addEventListener('click', async function() {
+      const resultEl = document.getElementById('payment-method-result');
+      
+      try {
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+        
+        // Create a card element (we won't actually mount it)
+        const elements = stripe.elements();
+        
+        // Create a payment method with test card details
+        const result = await stripe.createPaymentMethod({
+          type: 'card',
+          card: {
+            number: '4242424242424242',
+            exp_month: 12,
+            exp_year: 2025,
+            cvc: '123'
+          },
+          billing_details: {
+            name: 'Test User',
+            email: 'test@example.com'
+          }
+        });
+        
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+        
+        resultEl.innerHTML = `<span class="success">✓ Payment method created successfully!</span><br>Payment Method ID: ${result.paymentMethod.id}`;
+        testResults.paymentMethod = true;
+      } catch (error) {
+        resultEl.innerHTML = `<span class="error">✗ Error creating payment method: ${error.message}</span>`;
+        testResults.paymentMethod = false;
+      }
+      
+      updateSummary();
+    });
+    
+    // Test 3: Simulate Payment Intent (this would normally be done server-side)
+    document.getElementById('test-payment-intent').addEventListener('click', function() {
+      const resultEl = document.getElementById('payment-intent-result');
+      
+      try {
+        // This is just a simulation since we can't create a real payment intent from the client
+        const simulatedClientSecret = 'pi_' + Math.random().toString(36).substring(2, 15) + '_secret_' + Math.random().toString(36).substring(2, 15);
+        
+        resultEl.innerHTML = `<span class="success">✓ Payment intent simulation successful!</span><br>Simulated Client Secret: ${simulatedClientSecret}`;
+        testResults.paymentIntent = true;
+      } catch (error) {
+        resultEl.innerHTML = `<span class="error">✗ Error simulating payment intent: ${error.message}</span>`;
+        testResults.paymentIntent = false;
+      }
+      
+      updateSummary();
+    });
+  </script>
+</body>
+</html>

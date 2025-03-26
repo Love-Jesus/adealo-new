@@ -1,0 +1,170 @@
+/* 
+   Design Tokens & Variables
+   Defines the design system for the entire site
+*/
+
+:root {
+  /* Color System */
+  --color-primary: #4361ee;
+  --color-primary-light: #4895ef;
+  --color-primary-dark: #3a0ca3;
+  --color-secondary: #7209b7;
+  --color-secondary-light: #9d4edd;
+  --color-secondary-dark: #560bad;
+  --color-accent: #4cc9f0;
+  --color-accent-light: #72efdd;
+  --color-accent-dark: #3a86ff;
+  
+  --color-success: #2ecc71;
+  --color-warning: #f39c12;
+  --color-error: #e74c3c;
+  --color-info: #3498db;
+  
+  --color-text-dark: #1a1a2e;
+  --color-text-medium: #4a4a68;
+  --color-text-light: #f8f9fa;
+  --color-text-muted: #6c757d;
+  
+  --color-background-light: #ffffff;
+  --color-background-off: #f8f9fa;
+  --color-background-dark: #0f172a;
+  --color-background-darker: #0a0f1c;
+  
+  --color-border-light: rgba(255, 255, 255, 0.1);
+  --color-border-dark: rgba(0, 0, 0, 0.1);
+  
+  /* Gradient Presets */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  --gradient-primary-light: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary-light));
+  --gradient-primary-dark: linear-gradient(135deg, var(--color-primary-dark), var(--color-secondary-dark));
+  --gradient-accent: linear-gradient(135deg, var(--color-accent), var(--color-primary-light));
+  --gradient-dark: linear-gradient(135deg, var(--color-background-dark), var(--color-secondary-dark));
+  
+  /* Typography */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-family-heading: var(--font-family-base);
+  --font-family-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-md: 1.125rem;   /* 18px */
+  --font-size-lg: 1.25rem;    /* 20px */
+  --font-size-xl: 1.5rem;     /* 24px */
+  --font-size-2xl: 1.875rem;  /* 30px */
+  --font-size-3xl: 2.25rem;   /* 36px */
+  --font-size-4xl: 3rem;      /* 48px */
+  --font-size-5xl: 3.75rem;   /* 60px */
+  --font-size-6xl: 4.5rem;    /* 72px */
+  
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-loose: 1.8;
+  
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  
+  /* Spacing System */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.5rem;    /* 24px */
+  --space-6: 2rem;      /* 32px */
+  --space-7: 2.5rem;    /* 40px */
+  --space-8: 3rem;      /* 48px */
+  --space-9: 4rem;      /* 64px */
+  --space-10: 5rem;     /* 80px */
+  --space-11: 6rem;     /* 96px */
+  --space-12: 8rem;     /* 128px */
+  --space-13: 10rem;    /* 160px */
+  --space-14: 12rem;    /* 192px */
+  --space-15: 14rem;    /* 224px */
+  --space-16: 16rem;    /* 256px */
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-xl: 1rem;     /* 16px */
+  --radius-2xl: 1.5rem;  /* 24px */
+  --radius-3xl: 2rem;    /* 32px */
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  
+  --shadow-primary: 0 10px 15px -3px rgba(67, 97, 238, 0.3), 0 4px 6px -2px rgba(67, 97, 238, 0.15);
+  --shadow-secondary: 0 10px 15px -3px rgba(114, 9, 183, 0.3), 0 4px 6px -2px rgba(114, 9, 183, 0.15);
+  --shadow-accent: 0 10px 15px -3px rgba(76, 201, 240, 0.3), 0 4px 6px -2px rgba(76, 201, 240, 0.15);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Z-index */
+  --z-negative: -1;
+  --z-elevate: 1;
+  --z-dropdown: 10;
+  --z-sticky: 100;
+  --z-fixed: 1000;
+  --z-modal: 1100;
+  --z-popover: 1200;
+  --z-tooltip: 1300;
+  --z-toast: 1400;
+  --z-preloader: 9999;
+  
+  /* Container Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+  
+  /* Glassmorphism */
+  --glass-background: rgba(255, 255, 255, 0.1);
+  --glass-background-dark: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-dark: rgba(0, 0, 0, 0.1);
+  --glass-blur: blur(16px);
+  --glass-blur-light: blur(8px);
+  --glass-blur-heavy: blur(24px);
+}
+
+/* Dark Mode Variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-dark: #f8f9fa;
+    --color-text-medium: #e2e8f0;
+    --color-text-light: #1a1a2e;
+    --color-text-muted: #a0aec0;
+    
+    --color-background-light: #0f172a;
+    --color-background-off: #1a202c;
+    --color-background-dark: #f8f9fa;
+    --color-background-darker: #ffffff;
+    
+    --color-border-light: rgba(0, 0, 0, 0.1);
+    --color-border-dark: rgba(255, 255, 255, 0.1);
+    
+    --glass-background: rgba(15, 23, 42, 0.7);
+    --glass-background-dark: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-border-dark: rgba(255, 255, 255, 0.1);
+  }
+}

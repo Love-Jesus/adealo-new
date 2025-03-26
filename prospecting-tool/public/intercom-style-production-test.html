@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intercom-Style Widget Production Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #6366f1;
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 20px;
+    }
+    .card {
+      background-color: #f9fafb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    .info {
+      background-color: #f0f9ff;
+      border-left: 4px solid #6366f1;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    code {
+      background-color: #f1f5f9;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .widget-id-form {
+      margin-bottom: 20px;
+    }
+    .widget-id-form input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 300px;
+    }
+    .widget-id-form button {
+      padding: 8px 16px;
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+    .api-controls {
+      margin-top: 20px;
+      padding: 16px;
+      background-color: #f8fafc;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .api-controls h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .api-controls button {
+      padding: 8px 16px;
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+    .api-controls button:hover {
+      background-color: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Intercom-Style Widget Production Test</h1>
+    
+    <div class="info">
+      <p>This page demonstrates the Intercom-style chat widget in a production environment.</p>
+      <p>Enter a widget ID below to test a specific configuration, or leave it blank to use the default test widget.</p>
+    </div>
+    
+    <div class="widget-id-form">
+      <input type="text" id="widgetIdInput" placeholder="Enter Widget ID (required)">
+      <button onclick="loadWidget()">Load Widget</button>
+    </div>
+    
+    <div class="card">
+      <h2>About Adealo</h2>
+      <p>Adealo is a powerful prospecting tool that helps businesses find and connect with potential customers.</p>
+      <p>Our platform provides advanced features for lead generation, customer engagement, and sales acceleration.</p>
+    </div>
+    
+    <div class="card">
+      <h2>Key Features</h2>
+      <ul>
+        <li>Intelligent lead discovery</li>
+        <li>Automated outreach campaigns</li>
+        <li>Advanced analytics and reporting</li>
+        <li>CRM integration</li>
+        <li>Team collaboration tools</li>
+      </ul>
+    </div>
+    
+    <div class="api-controls">
+      <h3>Widget API Controls</h3>
+      <p>Use these buttons to interact with the widget programmatically:</p>
+      <button onclick="openWidget()">Open Widget</button>
+      <button onclick="closeWidget()">Close Widget</button>
+      <button onclick="showHomeScreen()">Show Home Screen</button>
+      <button onclick="showSupportScreen()">Show Support Screen</button>
+      <button onclick="showBookDemoScreen()">Show Book Demo Screen</button>
+      <button onclick="showCallMeScreen()">Show Call Me Screen</button>
+    </div>
+    
+    <p>Click on the chat widget in the bottom-right corner to test the different features.</p>
+  </div>
+  
+  <script>
+    // Function to load the widget with the specified ID
+    function loadWidget() {
+      // Remove any existing widget scripts
+      const existingScripts = document.querySelectorAll('script[src*="intercom-style-widget"]');
+      existingScripts.forEach(script => script.remove());
+      
+      // Remove any existing widget containers
+      const existingContainers = document.getElementById('adealo-widget-container');
+      if (existingContainers) {
+        existingContainers.remove();
+      }
+      
+      // Get the widget ID from the input field
+      const widgetId = document.getElementById('widgetIdInput').value.trim();
+      
+      if (!widgetId) {
+        alert('Please enter a widget ID');
+        return;
+      }
+      
+      // Create the widget config script
+      const configScript = document.createElement('script');
+      configScript.textContent = `
+        window.widgetConfig = {
+          id: '${widgetId}'
+        };
+      `;
+      document.head.appendChild(configScript);
+      
+      // Create the widget script
+      const widgetScript = document.createElement('script');
+      widgetScript.src = 'https://adealo-ce238.web.app/intercom-style-widget-adapter.js';
+      widgetScript.setAttribute('data-widget-id', widgetId);
+      document.head.appendChild(widgetScript);
+      
+      // Update the info box
+      const infoBox = document.querySelector('.info');
+      infoBox.innerHTML = `
+        <p><strong>Widget ID:</strong> <code>${widgetId}</code></p>
+        <p>The widget has been loaded. Click on the chat icon in the bottom-right corner to test it.</p>
+      `;
+    }
+    
+    // API functions
+    function openWidget() {
+      if (window.__ADEALO_WIDGET_INSTANCE) {
+        window.__ADEALO_WIDGET_INSTANCE.open();
+      } else {
+        alert('Widget not loaded yet. Please load the widget first.');
+      }
+    }
+    
+    function closeWidget() {
+      if (window.__ADEALO_WIDGET_INSTANCE) {
+        window.__ADEALO_WIDGET_INSTANCE.close();
+      } else {
+        alert('Widget not loaded yet. Please load the widget first.');
+      }
+    }
+    
+    function showHomeScreen() {
+      if (window.__ADEALO_WIDGET_INSTANCE) {
+        window.__ADEALO_WIDGET_INSTANCE.showScreen('home');
+      } else {
+        alert('Widget not loaded yet. Please load the widget first.');
+      }
+    }
+    
+    function showSupportScreen() {
+      if (window.__ADEALO_WIDGET_INSTANCE) {
+        window.__ADEALO_WIDGET_INSTANCE.showScreen('support');
+      } else {
+        alert('Widget not loaded yet. Please load the widget first.');
+      }
+    }
+    
+    function showBookDemoScreen() {
+      if (window.__ADEALO_WIDGET_INSTANCE) {
+        window.__ADEALO_WIDGET_INSTANCE.showScreen('book-demo');
+      } else {
+        alert('Widget not loaded yet. Please load the widget first.');
+      }
+    }
+    
+    function showCallMeScreen() {
+      if (window.__ADEALO_WIDGET_INSTANCE) {
+        window.__ADEALO_WIDGET_INSTANCE.showScreen('call-me');
+      } else {
+        alert('Widget not loaded yet. Please load the widget first.');
+      }
+    }
+    
+    // Check for widget ID in URL parameters
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+    
+    // Load widget on page load if ID is in URL
+    window.onload = function() {
+      const widgetIdFromUrl = getUrlParameter('widgetId');
+      if (widgetIdFromUrl) {
+        document.getElementById('widgetIdInput').value = widgetIdFromUrl;
+        loadWidget();
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+[
+  {
+    "companyId": "comp-001",
+    "organisationNumber": "123456789",
+    "name": "TechInnovate Solutions",
+    "displayName": "TechInnovate",
+    "businessUnitId": "bu-001",
+    "visitorAddress": {
+      "addressLine": "123 Tech Avenue",
+      "zipCode": "10001",
+      "postPlace": "New York"
+    },
+    "postalAddress": {
+      "addressLine": "PO Box 456",
+      "zipCode": "10001",
+      "postPlace": "New York"
+    },
+    "contact": {
+      "email": "info@techinnovate.example",
+      "telephoneNumber": "+1 212-555-1234",
+      "mobilePhone": "+1 917-555-5678",
+      "homePage": "https://techinnovate.example"
+    },
+    "location": {
+      "countryPart": "Northeast",
+      "county": "New York",
+      "municipality": "New York City",
+      "coordinates": "40.7128,-74.0060"
+    },
+    "financials": {
+      "revenue": 12500000,
+      "profit": 2800000,
+      "currency": "USD",
+      "companyAccountsLastUpdatedDate": "2024-12-31"
+    },
+    "info": {
+      "foundationYear": "2015",
+      "foundationDate": "2015-03-15",
+      "numberOfEmployees": "85",
+      "status": {
+        "status": "Active",
+        "description": "Operational",
+        "statusDate": "2024-01-01"
+      },
+      "naceCategories": "J62.01 Computer programming activities",
+      "proffIndustries": "Software Development"
+    },
+    "roles": {
+      "companyRoles": "Software Provider",
+      "personRoles": "CEO, CTO, CFO"
+    },
+    "marketingProtection": false,
+    "mainOffice": "New York",
+    "stakeholders": []
+  },
+  {
+    "companyId": "comp-002",
+    "organisationNumber": "987654321",
+    "name": "EcoGreen Energy",
+    "displayName": "EcoGreen",
+    "businessUnitId": "bu-002",
+    "visitorAddress": {
+      "addressLine": "456 Renewable Road",
+      "zipCode": "94105",
+      "postPlace": "San Francisco"
+    },
+    "postalAddress": {
+      "addressLine": "456 Renewable Road",
+      "zipCode": "94105",
+      "postPlace": "San Francisco"
+    },
+    "contact": {
+      "email": "contact@ecogreen.example",
+      "telephoneNumber": "+1 415-555-9876",
+      "mobilePhone": "+1 415-555-5432",
+      "homePage": "https://ecogreen.example"
+    },
+    "location": {
+      "countryPart": "West",
+      "county": "San Francisco",
+      "municipality": "San Francisco",
+      "coordinates": "37.7749,-122.4194"
+    },
+    "financials": {
+      "revenue": 8750000,
+      "profit": 1200000,
+      "currency": "USD",
+      "companyAccountsLastUpdatedDate": "2024-12-31"
+    },
+    "info": {
+      "foundationYear": "2018",
+      "foundationDate": "2018-06-22",
+      "numberOfEmployees": "42",
+      "status": {
+        "status": "Active",
+        "description": "Operational",
+        "statusDate": "2024-01-01"
+      },
+      "naceCategories": "D35.11 Production of electricity",
+      "proffIndustries": "Renewable Energy"
+    },
+    "roles": {
+      "companyRoles": "Energy Provider",
+      "personRoles": "CEO, COO, Head of R&D"
+    },
+    "marketingProtection": false,
+    "mainOffice": "San Francisco",
+    "stakeholders": []
+  },
+  {
+    "companyId": "comp-003",
+    "organisationNumber": "456789123",
+    "name": "HealthPlus Medical Systems",
+    "displayName": "HealthPlus",
+    "businessUnitId": "bu-003",
+    "visitorAddress": {
+      "addressLine": "789 Wellness Blvd",
+      "zipCode": "60601",
+      "postPlace": "Chicago"
+    },
+    "postalAddress": {
+      "addressLine": "PO Box 789",
+      "zipCode": "60601",
+      "postPlace": "Chicago"
+    },
+    "contact": {
+      "email": "info@healthplus.example",
+      "telephoneNumber": "+1 312-555-7890",
+      "mobilePhone": "+1 312-555-1234",
+      "homePage": "https://healthplus.example"
+    },
+    "location": {
+      "countryPart": "Midwest",
+      "county": "Cook",
+      "municipality": "Chicago",
+      "coordinates": "41.8781,-87.6298"
+    },
+    "financials": {
+      "revenue": 32000000,
+      "profit": 5600000,
+      "currency": "USD",
+      "companyAccountsLastUpdatedDate": "2024-12-31"
+    },
+    "info": {
+      "foundationYear": "2010",
+      "foundationDate": "2010-09-10",
+      "numberOfEmployees": "210",
+      "status": {
+        "status": "Active",
+        "description": "Operational",
+        "statusDate": "2024-01-01"
+      },
+      "naceCategories": "Q86.10 Hospital activities",
+      "proffIndustries": "Healthcare"
+    },
+    "roles": {
+      "companyRoles": "Healthcare Provider",
+      "personRoles": "CEO, CMO, CTO"
+    },
+    "marketingProtection": true,
+    "mainOffice": "Chicago",
+    "stakeholders": []
+  }
+]

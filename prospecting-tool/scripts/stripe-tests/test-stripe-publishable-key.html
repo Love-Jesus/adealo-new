@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Publishable Key Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .container {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    h1 {
+      color: #5469d4;
+    }
+    .card-element {
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 4px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Stripe Publishable Key Test</h1>
+  <p>This page tests if the Stripe publishable key is valid by attempting to create a card element.</p>
+  
+  <div class="container">
+    <h2>Key Information</h2>
+    <p><strong>Publishable Key:</strong> <span id="key-display">pk_test_51R3hqb2RSvYJumwmdR4hgY0xF53vBs8Dr589hZfm2truzLssgwl9uNAzdqQY4fI9gy0a5ydVDq7REeUA9nDOUVDS00tPD0lkZn</span></p>
+    
+    <h2>Card Element Test</h2>
+    <div id="card-element" class="card-element"></div>
+    
+    <div id="success-result" class="result success hidden">
+      <strong>Success!</strong> The publishable key is valid and the Stripe.js library is working correctly.
+    </div>
+    
+    <div id="error-result" class="result error hidden">
+      <strong>Error:</strong> <span id="error-message"></span>
+    </div>
+  </div>
+  
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const publishableKey = document.getElementById('key-display').textContent;
+      
+      try {
+        // Initialize Stripe with the publishable key
+        const stripe = Stripe(publishableKey);
+        
+        // Create a card element
+        const elements = stripe.elements();
+        const cardElement = elements.create('card');
+        
+        // Mount the card element to the DOM
+        cardElement.mount('#card-element');
+        
+        // Listen for errors
+        cardElement.on('change', function(event) {
+          if (event.error) {
+            showError(event.error.message);
+          } else {
+            showSuccess();
+          }
+        });
+        
+        // Show success message if no immediate errors
+        setTimeout(showSuccess, 1000);
+      } catch (error) {
+        showError(error.message);
+      }
+      
+      function showSuccess() {
+        document.getElementById('success-result').classList.remove('hidden');
+        document.getElementById('error-result').classList.add('hidden');
+      }
+      
+      function showError(message) {
+        document.getElementById('error-message').textContent = message;
+        document.getElementById('error-result').classList.remove('hidden');
+        document.getElementById('success-result').classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

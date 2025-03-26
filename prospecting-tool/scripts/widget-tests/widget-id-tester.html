@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Widget ID Tester</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      color: #4a6cf7;
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      color: #6e8efb;
+      margin-top: 40px;
+    }
+    
+    pre {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    
+    code {
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    }
+    
+    .highlight {
+      background-color: #fffde7;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    
+    .note {
+      background-color: #e8f4fd;
+      padding: 15px;
+      border-left: 4px solid #2196f3;
+      margin: 20px 0;
+    }
+    
+    .warning {
+      background-color: #fff8e1;
+      padding: 15px;
+      border-left: 4px solid #ffc107;
+      margin: 20px 0;
+    }
+    
+    .error {
+      background-color: #ffebee;
+      padding: 15px;
+      border-left: 4px solid #f44336;
+      margin: 20px 0;
+    }
+    
+    .success {
+      background-color: #e8f5e9;
+      padding: 15px;
+      border-left: 4px solid #4caf50;
+      margin: 20px 0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    button {
+      background-color: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    button:hover {
+      background-color: #3a5ce5;
+    }
+    
+    .test-area {
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-height: 300px;
+      position: relative;
+    }
+    
+    .embed-code {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+    }
+    
+    .tab.active {
+      border-bottom: 2px solid #4a6cf7;
+      color: #4a6cf7;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    #config-display {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 2s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Widget ID Tester</h1>
+  
+  <p>This tool allows you to test your widget configuration by entering a widget ID. The widget configuration will be fetched from the server and displayed below.</p>
+  
+  <div class="tabs">
+    <div class="tab active" data-tab="production">Production</div>
+    <div class="tab" data-tab="local">Local Development</div>
+  </div>
+  
+  <div class="tab-content active" id="production-tab">
+    <div class="form-group">
+      <label for="widget-id">Widget ID:</label>
+      <input type="text" id="widget-id" placeholder="Enter your widget ID (e.g., pjxZqkQ9fAZaqIoOOJJx)" value="pjxZqkQ9fAZaqIoOOJJx">
+    </div>
+    
+    <button id="test-widget-config">Test Widget Configuration</button>
+    
+    <div id="production-result"></div>
+    
+    <div id="production-config-display"></div>
+    
+    <div class="embed-code">
+      <p>Embed code:</p>
+      <pre><code id="embed-code">&lt;script src="https://us-central1-adealo-ce238.cloudfunctions.net/widget?widgetId=pjxZqkQ9fAZaqIoOOJJx"&gt;&lt;/script&gt;
+&lt;chat-widget&gt;&lt;/chat-widget&gt;</code></pre>
+    </div>
+    
+    <div class="test-area" id="test-area">
+      <p>The widget will appear here after clicking "Test Widget".</p>
+      <button id="test-widget">Test Widget</button>
+    </div>
+  </div>
+  
+  <div class="tab-content" id="local-tab">
+    <div class="form-group">
+      <label for="local-widget-id">Widget ID:</label>
+      <input type="text" id="local-widget-id" placeholder="Enter your widget ID (e.g., pjxZqkQ9fAZaqIoOOJJx)" value="pjxZqkQ9fAZaqIoOOJJx">
+    </div>
+    
+    <div class="form-group">
+      <label for="local-api-url">Local API URL:</label>
+      <input type="text" id="local-api-url" placeholder="Enter your local API URL (e.g., http://localhost:5001/adealo-ce238/us-central1)" value="http://localhost:5001/adealo-ce238/us-central1">
+    </div>
+    
+    <button id="test-local-widget-config">Test Local Widget Configuration</button>
+    
+    <div id="local-result"></div>
+    
+    <div id="local-config-display"></div>
+    
+    <div class="embed-code">
+      <p>Local embed code:</p>
+      <pre><code id="local-embed-code">&lt;script src="http://localhost:5001/adealo-ce238/us-central1/widget?widgetId=pjxZqkQ9fAZaqIoOOJJx"&gt;&lt;/script&gt;
+&lt;chat-widget&gt;&lt;/chat-widget&gt;</code></pre>
+    </div>
+    
+    <div class="test-area" id="local-test-area">
+      <p>The local widget will appear here after clicking "Test Local Widget".</p>
+      <button id="test-local-widget">Test Local Widget</button>
+    </div>
+  </div>
+  
+  <div class="note">
+    <strong>Note:</strong> Make sure you have created a widget configuration in Firestore with the widget ID you enter above.
+  </div>
+  
+  <script>
+    // Tab functionality
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        // Remove active class from all tabs and tab contents
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        tabContents.forEach(function(c) { c.classList.remove('active'); });
+        
+        // Add active class to clicked tab and corresponding tab content
+        tab.classList.add('active');
+        const tabName = tab.getAttribute('data-tab');
+        document.getElementById(tabName + '-tab').classList.add('active');
+      });
+    });
+    
+    // Production widget configuration testing
+    const widgetIdInput = document.getElementById('widget-id');
+    const testWidgetConfigButton = document.getElementById('test-widget-config');
+    const productionResult = document.getElementById('production-result');
+    const productionConfigDisplay = document.getElementById('production-config-display');
+    
+    testWidgetConfigButton.addEventListener('click', function() {
+      const widgetId = widgetIdInput.value.trim();
+      
+      if (!widgetId) {
+        productionResult.innerHTML = '<div class="error">Please enter a widget ID</div>';
+        return;
+      }
+      
+      // Show loading indicator
+      productionResult.innerHTML = '<div class="loader"></div>';
+      productionConfigDisplay.innerHTML = '';
+      
+      // Fetch widget configuration
+      fetch('https://us-central1-adealo-ce238.cloudfunctions.net/getWidgetConfigHttp?widgetId=' + widgetId)
+        .then(function(response) {
+          if (!response.ok) {
+            return response.json().then(function(errorData) {
+              throw new Error(errorData.error || 'Error fetching widget configuration');
+            });
+          }
+          return response.json();
+        })
+        .then(function(config) {
+          productionResult.innerHTML = '<div class="success">Widget configuration found!</div>';
+          productionConfigDisplay.innerHTML = '<h2>Widget Configuration</h2><pre><code>' + JSON.stringify(config, null, 2) + '</code></pre>';
+          
+          // Update embed code
+          document.getElementById('embed-code').textContent = '<script src="https://us-central1-adealo-ce238.cloudfunctions.net/widget?widgetId=' + widgetId + '"></script>\n<chat-widget></chat-widget>';
+        })
+        .catch(function(error) {
+          productionResult.innerHTML = '<div class="error">' + error.message + '</div>';
+        });
+    });
+    
+    // Production widget testing
+    const testWidgetButton = document.getElementById('test-widget');
+    const testArea = document.getElementById('test-area');
+    
+    testWidgetButton.addEventListener('click', function() {
+      const widgetId = widgetIdInput.value.trim();
+      
+      if (!widgetId) {
+        alert('Please enter a widget ID');
+        return;
+      }
+      
+      // Clear test area
+      testArea.innerHTML = '';
+      
+      // Create script element
+      const script = document.createElement('script');
+      script.src = 'https://us-central1-adealo-ce238.cloudfunctions.net/widget?widgetId=' + widgetId;
+      
+      // Create chat-widget element
+      const chatWidget = document.createElement('chat-widget');
+      
+      // Append elements to test area
+      testArea.appendChild(script);
+      testArea.appendChild(chatWidget);
+    });
+    
+    // Local widget configuration testing
+    const localWidgetIdInput = document.getElementById('local-widget-id');
+    const localApiUrlInput = document.getElementById('local-api-url');
+    const testLocalWidgetConfigButton = document.getElementById('test-local-widget-config');
+    const localResult = document.getElementById('local-result');
+    const localConfigDisplay = document.getElementById('local-config-display');
+    
+    testLocalWidgetConfigButton.addEventListener('click', function() {
+      const widgetId = localWidgetIdInput.value.trim();
+      const apiUrl = localApiUrlInput.value.trim();
+      
+      if (!widgetId) {
+        localResult.innerHTML = '<div class="error">Please enter a widget ID</div>';
+        return;
+      }
+      
+      if (!apiUrl) {
+        localResult.innerHTML = '<div class="error">Please enter a local API URL</div>';
+        return;
+      }
+      
+      // Show loading indicator
+      localResult.innerHTML = '<div class="loader"></div>';
+      localConfigDisplay.innerHTML = '';
+      
+      // Fetch widget configuration
+      fetch(apiUrl + '/getWidgetConfigHttp?widgetId=' + widgetId)
+        .then(function(response) {
+          if (!response.ok) {
+            return response.json().then(function(errorData) {
+              throw new Error(errorData.error || 'Error fetching widget configuration');
+            });
+          }
+          return response.json();
+        })
+        .then(function(config) {
+          localResult.innerHTML = '<div class="success">Widget configuration found!</div>';
+          localConfigDisplay.innerHTML = '<h2>Widget Configuration</h2><pre><code>' + JSON.stringify(config, null, 2) + '</code></pre>';
+          
+          // Update embed code
+          document.getElementById('local-embed-code').textContent = '<script src="' + apiUrl + '/widget?widgetId=' + widgetId + '"></script>\n<chat-widget></chat-widget>';
+        })
+        .catch(function(error) {
+          localResult.innerHTML = '<div class="error">' + error.message + '</div>';
+        });
+    });
+    
+    // Local widget testing
+    const testLocalWidgetButton = document.getElementById('test-local-widget');
+    const localTestArea = document.getElementById('local-test-area');
+    
+    testLocalWidgetButton.addEventListener('click', function() {
+      const widgetId = localWidgetIdInput.value.trim();
+      const apiUrl = localApiUrlInput.value.trim();
+      
+      if (!widgetId) {
+        alert('Please enter a widget ID');
+        return;
+      }
+      
+      if (!apiUrl) {
+        alert('Please enter a local API URL');
+        return;
+      }
+      
+      // Clear test area
+      localTestArea.innerHTML = '';
+      
+      // Create script element
+      const script = document.createElement('script');
+      script.src = apiUrl + '/widget?widgetId=' + widgetId;
+      
+      // Create chat-widget element
+      const chatWidget = document.createElement('chat-widget');
+      
+      // Append elements to test area
+      localTestArea.appendChild(script);
+      localTestArea.appendChild(chatWidget);
+    });
+  </script>
+</body>
+</html>

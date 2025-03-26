@@ -1,0 +1,188 @@
+/* 
+   Component Styles
+   Styles for reusable UI components
+*/
+
+/* Cards */
+.card {
+  background-color: var(--color-background-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Feature Cards */
+.feature-card {
+  background-color: var(--color-background-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--gradient-primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-normal);
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.icon-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: rgba(67, 97, 238, 0.1);
+  z-index: 0;
+}
+
+.feature-icon i {
+  font-size: 1.75rem;
+  color: var(--color-primary);
+  position: relative;
+  z-index: 1;
+}
+
+.feature-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.beta-tag {
+  font-size: var(--font-size-xs);
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-accent);
+  color: var(--color-text-dark);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Testimonial Cards */
+.testimonial-card {
+  background-color: var(--color-background-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonial-content {
+  flex: 1;
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.testimonial-content p {
+  font-style: italic;
+  color: var(--color-text-dark);
+  position: relative;
+  z-index: 1;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.author-info h4 {
+  margin-bottom: 0.25rem;
+}
+
+.author-info p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: 0;
+}
+
+.company-logo {
+  width: 60px;
+  height: 30px;
+  background-color: var(--color-background-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Metrics */
+.metric {
+  margin-bottom: var(--space-6);
+}
+
+.metric h3 {
+  font-size: var(--font-size-6xl);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+}
+
+.percent, .multiplier {
+  font-size: var(--font-size-3xl);
+  margin-left: var(--space-2);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--color-background-light);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}

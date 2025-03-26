@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct Widget URL Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #4a6cf7;
+            margin-bottom: 20px;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .url-display {
+            background-color: #f0f7ff;
+            border-left: 4px solid #4a6cf7;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: monospace;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <h1>Direct Widget URL Test</h1>
+    
+    <div class="card">
+        <h2>About This Test</h2>
+        <p>This page demonstrates the direct URL implementation for the widget script, eliminating the need for the redirect function.</p>
+        <p>The widget is loaded directly from Firebase Hosting using the URL:</p>
+        <div class="url-display">https://adealo-ce238.web.app/widget.js</div>
+        
+        <h3>Benefits of Direct URLs:</h3>
+        <ul>
+            <li>Improved performance by eliminating an HTTP redirect</li>
+            <li>Simplified architecture with fewer components</li>
+            <li>Reduced costs from fewer function invocations</li>
+            <li>Increased reliability by removing a potential point of failure</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h2>Implementation</h2>
+        <p>The widget is loaded using a direct script tag:</p>
+        <code>&lt;script src="https://adealo-ce238.web.app/widget.js"&gt;&lt;/script&gt;</code>
+        
+        <p>This replaces the previous implementation that used a Cloud Function redirect:</p>
+        <code>&lt;script src="https://us-central1-adealo-ce238.cloudfunctions.net/intercomStyleWidgetAdapter"&gt;&lt;/script&gt;</code>
+    </div>
+    
+    <div class="card">
+        <h2>Test Results</h2>
+        <p>The widget should appear in the bottom-right corner of this page. Click on it to test its functionality.</p>
+        <p>If the widget loads correctly, it confirms that the direct URL implementation is working as expected.</p>
+    </div>
+
+    <!-- Load the widget with direct URL -->
+    <script>
+        window.widgetConfig = {
+            id: 'test-widget-id',
+            design: {
+                position: 'bottom-right',
+                theme: 'light',
+                borderRadius: 16,
+                colors: {
+                    primary: '#4a6cf7'
+                },
+                launcher: {
+                    size: 60,
+                    shape: 'circle',
+                    pulseAnimation: true
+                }
+            },
+            content: {
+                greeting: 'Direct URL Test',
+                tagline: 'This widget is loaded directly from Firebase Hosting'
+            },
+            features: {
+                chat: {
+                    enabled: true,
+                    agentName: 'Support Team',
+                    greeting: 'Hi there! 👋 This widget is loaded using a direct URL.'
+                },
+                bookDemo: {
+                    enabled: true
+                },
+                callMe: {
+                    enabled: true
+                }
+            }
+        };
+    </script>
+    <script src="https://adealo-ce238.web.app/widget.js"></script>
+</body>
+</html>

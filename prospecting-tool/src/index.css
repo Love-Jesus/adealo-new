@@ -1,0 +1,588 @@
+:root {
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Base radius for consistent rounded corners */
+  --radius: 0.5rem;
+  
+  /* Light Theme - Updated Palette */
+  --primary: #0056b3;           /* Soft blue for primary elements */
+  --primary-foreground: #FFFFFF;
+  --secondary: #6B5BF5;
+  --secondary-foreground: #FFFFFF;
+  --accent: #00B4D8;
+  --accent-foreground: #FFFFFF;
+  --background: #F9FAFB;
+  --foreground: #333333;        /* Dark gray text */
+  --card: #FFFFFF;
+  --card-foreground: #333333;
+  --popover: #FFFFFF;
+  --popover-foreground: #333333;
+  --muted: #f1f1f1;             /* Light gray for hover state */
+  --muted-foreground: #6B7280;
+  --destructive: #ef4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #0056b3;
+  
+  /* Chart colors */
+  --chart-1: #3A36DB;
+  --chart-2: #6B5BF5;
+  --chart-3: #00B4D8;
+  --chart-4: #10b981;
+  --chart-5: #ef4444;
+  
+  /* Sidebar colors - light mode specific */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #333333;        /* Dark gray text */
+  --sidebar-primary: #0056b3;           /* Soft blue for primary elements */
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(0, 86, 179, 0.1); /* Subtle blue background for hover */
+  --sidebar-accent-foreground: #0056b3;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #0056b3;
+  
+  /* Transition properties for theme switching */
+  --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+a {
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: inherit;
+  transition: none;
+}
+a:hover {
+  color: var(--primary);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 100%;
+  min-height: 100vh;
+  width: 100%;
+  transition: none;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--card);
+  color: var(--card-foreground);
+  cursor: pointer;
+  transition: none;
+}
+button:hover {
+  border-color: var(--primary);
+  transform: none;
+  box-shadow: none;
+}
+button:active {
+  transform: none;
+}
+button:focus,
+button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--foreground);
+    background-color: var(--background);
+  }
+  a:hover {
+    color: var(--secondary);
+  }
+  button {
+    background-color: var(--card);
+    color: var(--card-foreground);
+  }
+}
+@import "tailwindcss";
+
+:root.dark {
+  /* Dark Theme - Updated Palette */
+  --background: #121212;        /* Deep black for true dark mode */
+  --foreground: #E0E0E0;        /* Off-white for comfortable reading */
+  --card: #1E1E1E;              /* Slightly lighter for depth */
+  --card-foreground: #E0E0E0;   /* Off-white text on cards */
+  --popover: #1E1E1E;           /* Slightly lighter for depth */
+  --popover-foreground: #E0E0E0;
+  --primary: #2F80ED;           /* Same blue for consistency */
+  --primary-foreground: #FFFFFF;/* White text on primary elements */
+  --secondary: #F2994A;         /* Warm orange accent */
+  --secondary-foreground: #FFFFFF;
+  --muted: #333333;             /* Soft gray for subtle contrast */
+  --muted-foreground: #BDBDBD;  /* Muted gray for less important text */
+  --accent: #F2994A;            /* Warm orange accent */
+  --accent-foreground: #FFFFFF; /* White for accent text */
+  --destructive: #ef4444;       /* Red for destructive actions */
+  --destructive-foreground: #FFFFFF;
+  --border: #333333;            /* Soft gray for subtle contrast */
+  --input: #333333;             /* Soft gray for inputs */
+  --ring: #2F80ED;              /* Primary color for focus rings */
+  
+  /* Chart colors - updated to match new palette */
+  --chart-1: #2F80ED;
+  --chart-2: #F2994A;
+  --chart-3: #27AE60;
+  --chart-4: #EB5757;
+  --chart-5: #9B51E0;
+  
+  /* Sidebar colors - unified with main theme */
+  --sidebar: #121212;           /* Deep black for sidebar */
+  --sidebar-foreground: #ddd;   /* Soft white text */
+  --sidebar-primary: #63b3ed;   /* Soft blue for primary elements */
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: rgba(99, 179, 237, 0.1); /* Subtle blue background for hover */
+  --sidebar-accent-foreground: #63b3ed;
+  --sidebar-border: #333333;
+  --sidebar-ring: #63b3ed;
+  
+  color-scheme: dark !important;
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
+}
+
+.dark {
+  color-scheme: dark !important;
+  color: var(--foreground) !important;
+  background-color: var(--background) !important;
+}
+
+html.dark body {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+  50% {
+    background-position: 100% 50%;
+    opacity: 0.8;
+  }
+  100% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+}
+
+.animate-gradient {
+  animation: gradient 3s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Glassmorphism Effects */
+.glassmorphic {
+  background: rgba(var(--card), 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+}
+
+/* Light mode specific glassmorphism */
+:root:not(.dark) .glassmorphic {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode specific glassmorphism */
+:root.dark .glassmorphic {
+  background: rgba(30, 30, 30, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Light mode glow */
+:root:not(.dark) .subtle-glow {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode glow */
+:root.dark .subtle-glow {
+  box-shadow: 0 0 15px rgba(234, 234, 234, 0.1);
+}
+
+/* Enhanced Typography */
+body, h1, h2, h3, h4, h5, h6, p, span, div {
+  font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Minimal UI Elements */
+.minimal-ui {
+  border: none;
+  box-shadow: none;
+}
+
+/* Light mode hover */
+:root:not(.dark) .minimal-ui:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode hover */
+:root.dark .minimal-ui:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Reduce borders */
+/* Light mode border */
+:root:not(.dark) .border-subtle {
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Dark mode border */
+:root.dark .border-subtle {
+  border-width: 1px;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Card styling */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: none;
+}
+
+.card:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transform: none;
+  transition: none;
+}
+
+/* Styling for Active Menu Items */
+.active-menu-item {
+  position: relative;
+  z-index: 0;
+  transition: none;
+}
+
+/* Light mode active menu item */
+:root:not(.dark) .active-menu-item {
+  background-color: rgba(0, 86, 179, 0.2) !important; /* Light blue background for active items */
+  color: #0056b3 !important;
+  border: none;
+}
+
+/* Dark mode active menu item */
+:root.dark .active-menu-item {
+  background-color: rgba(99, 179, 237, 0.2) !important; /* Soft blue background */
+  color: #63b3ed !important;
+  border: none;
+}
+
+/* Override the default active state styling */
+[data-active=true].sidebar-menu-button.active-menu-item {
+  font-weight: 500;
+  transition: none;
+}
+
+
+/* Active state styling for sidebar menu buttons */
+[data-active=true].sidebar-menu-button {
+  font-weight: 500;
+  transition: none;
+}
+
+/* Light mode sidebar menu button hover state */
+:root:not(.dark) .sidebar-menu-button:hover {
+  background-color: #f1f1f1; /* Grey background on hover */
+  border: none;
+  box-shadow: none;
+  color: #333; /* Dark grey text */
+  transform: none;
+}
+
+/* Dark mode sidebar menu button hover state */
+:root.dark .sidebar-menu-button:hover {
+  background-color: rgba(99, 179, 237, 0.1); /* Soft blue background */
+  border: none;
+  box-shadow: none;
+  color: #63b3ed; /* Soft blue text */
+  transform: none;
+}
+
+/* Consistent icon styling */
+svg {
+  color: var(--muted-foreground);
+}
+
+/* Improved spacing */
+.container {
+  padding: 1.5rem;
+}
+
+/* Micro-interactions */
+.interactive-element {
+  transition: none;
+}
+
+.interactive-element:hover {
+  transform: none;
+}
+
+.interactive-element:active {
+  transform: none;
+}
+
+/* Improved typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.875rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p, li, span, div {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Support Chat RGB Border Animation */
+.rgb-border {
+  z-index: -1;
+  background: linear-gradient(
+    45deg,
+    #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff
+  );
+  background-size: 400% 400%;
+  animation: rgb-animation 3s ease infinite;
+  filter: blur(2px);
+  opacity: 0.024; /* Reduced by 80% from 0.12 */
+  /* Keep the border contained within the button */
+  transform: scale(0.95);
+  border-radius: inherit;
+}
+
+@keyframes rgb-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Fix for menu button text in collapsed state */
+[data-state="collapsed"] [data-sidebar="menu-button"] span {
+  display: none;
+}
+
+/* Beta tag styling */
+.ml-1\.5.text-xs.px-1\.5.py-0\.5.bg-primary\/20.text-primary.rounded-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Hide beta tag in collapsed state */
+[data-state="collapsed"] .ml-1\.5.text-xs.px-1\.5.py-0\.5.bg-primary\/20.text-primary.rounded-sm {
+  display: none;
+}
+
+/* Center the + button in collapsed state */
+[data-state="collapsed"] .group-data-[collapsible=icon]\:justify-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* Glass Panel Effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.25); /* Light frosted effect */
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Mode Glass Panel */
+.dark .glass-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Dashboard Card Glass Effect - Light Mode Only */
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.25) !important; /* Light frosted effect */
+  backdrop-filter: blur(12px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Dark Mode Dashboard Card - Original Styling */
+.dark .dashboard-card {
+  background: var(--card) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Sidebar Glass Effect - Light Mode Only */
+.glass-sidebar {
+  background: rgba(255, 255, 255, 0.25) !important; /* Light frosted effect */
+  backdrop-filter: blur(12px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Dark Mode Sidebar - Original Styling */
+.dark .glass-sidebar {
+  background: var(--sidebar) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-right: 1px solid var(--sidebar-border) !important;
+  box-shadow: none !important;
+}
+
+/* Remove focus outline/highlight from navigation elements */
+.sidebar-menu-button:focus,
+.sidebar-menu-button:focus-visible,
+[data-sidebar="menu-button"]:focus,
+[data-sidebar="menu-button"]:focus-visible,
+.nav-link:focus,
+.nav-link:focus-visible,
+nav a:focus,
+nav a:focus-visible,
+nav button:focus,
+nav button:focus-visible,
+.sidebar a:focus,
+.sidebar a:focus-visible,
+.sidebar button:focus,
+.sidebar button:focus-visible,
+[role="navigation"] *:focus,
+[role="navigation"] *:focus-visible,
+.navigation *:focus,
+.navigation *:focus-visible,
+.nav *:focus,
+.nav *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  -webkit-tap-highlight-color: transparent !important; /* Remove tap highlight on mobile */
+}
+
+/* Global focus removal for all clickable elements */
+a:focus, button:focus, [role="button"]:focus,
+a:focus-visible, button:focus-visible, [role="button"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Preserve focus outline for keyboard navigation only */
+.sidebar-menu-button:focus-visible:not(:active),
+[data-sidebar="menu-button"]:focus-visible:not(:active),
+.nav-link:focus-visible:not(:active),
+nav a:focus-visible:not(:active),
+nav button:focus-visible:not(:active),
+.sidebar a:focus-visible:not(:active),
+.sidebar button:focus-visible:not(:active),
+[role="navigation"] *:focus-visible:not(:active) {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 2px;
+}

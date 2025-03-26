@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prospecting Tool Onboarding</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+</head>
+<body>
+    <div class="onboarding-container">
+        <!-- Logo -->
+        <div class="logo-container">
+            <div class="logo">
+                <svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 0L0 20L20 40L40 20L20 0ZM20 8L32 20L20 32L8 20L20 8Z" fill="#6366f1"/>
+                    <path d="M50 10H45V30H50V10Z" fill="#333333"/>
+                    <path d="M60 10H55V30H60V10Z" fill="#333333"/>
+                    <path d="M80 10H65V15H70V30H75V15H80V10Z" fill="#333333"/>
+                    <path d="M90 10H85V30H100V25H90V10Z" fill="#333333"/>
+                    <path d="M110 10H105V30H120V25H110V10Z" fill="#333333"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-step" data-step="1"></div>
+                <div class="progress-step" data-step="2"></div>
+                <div class="progress-step" data-step="3"></div>
+                <div class="progress-step" data-step="4"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress" id="progress-indicator"></div>
+            </div>
+        </div>
+
+        <!-- Screens Container -->
+        <div class="screens-container">
+            <!-- Interactive visualization container -->
+            <div class="visualization-container">
+                <div class="visualization" id="role-visualization">
+                    <div class="orbit-container">
+                        <div class="orbit orbit-1"></div>
+                        <div class="orbit orbit-2"></div>
+                        <div class="center-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#fef08a"/>
+                                <path d="M20 10C14.48 10 10 14.48 10 20C10 25.52 14.48 30 20 30C25.52 30 30 25.52 30 20C30 14.48 25.52 10 20 10ZM20 13C21.66 13 23 14.34 23 16C23 17.66 21.66 19 20 19C18.34 19 17 17.66 17 16C17 14.34 18.34 13 20 13ZM20 27.2C17.5 27.2 15.29 25.92 14 23.98C14.03 21.99 18 20.9 20 20.9C21.99 20.9 25.97 21.99 26 23.98C24.71 25.92 22.5 27.2 20 27.2Z" fill="#6366f1"/>
+                            </svg>
+                        </div>
+                        <!-- Replace letters with dots in orbit items -->
+                        <div class="orbit-item" data-role="sales-rep"></div>
+                        <div class="orbit-item" data-role="marketing"></div>
+                        <div class="orbit-item" data-role="business-development"></div>
+                        <div class="orbit-item" data-role="founder"></div>
+                        <div class="orbit-item" data-role="sales-leader"></div>
+                        <div class="orbit-item" data-role="talent-acquisition"></div>
+                        <div class="orbit-item" data-role="operations-support"></div>
+                        <div class="orbit-item" data-role="customer-success"></div>
+                        <div class="orbit-item" data-role="other"></div>
+                    </div>
+                </div>
+                <div class="visualization" id="goals-visualization">
+                    <div class="goals-icons">
+                        <div class="goal-icon" data-goal="generate-leads">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#e9d5ff"/>
+                                <path d="M30 12H26V10H24V12H16V10H14V12H10C8.9 12 8 12.9 8 14V30C8 31.1 8.9 32 10 32H30C31.1 32 32 31.1 32 30V14C32 12.9 31.1 12 30 12ZM30 30H10V18H30V30ZM30 16H10V14H30V16ZM16 24H14V22H16V24ZM20 24H18V22H20V24ZM24 24H22V22H24V24ZM16 28H14V26H16V28ZM20 28H18V26H20V28ZM24 28H22V26H24V28Z" fill="#6366f1"/>
+                            </svg>
+                            <span>Leads</span>
+                        </div>
+                        <div class="goal-icon" data-goal="support-widgets">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#e9d5ff"/>
+                                <path d="M28 12H12C10.9 12 10 12.9 10 14V22C10 23.1 10.9 24 12 24H16V30L22 24H28C29.1 24 30 23.1 30 22V14C30 12.9 29.1 12 28 12ZM28 22H21.17L18 25.17V22H12V14H28V22Z" fill="#6366f1"/>
+                                <path d="M15 18H17V20H15V18ZM19 18H21V20H19V18ZM23 18H25V20H23V18Z" fill="#6366f1"/>
+                            </svg>
+                            <span>Widgets</span>
+                        </div>
+                        <div class="goal-icon" data-goal="prospect-companies">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#e9d5ff"/>
+                                <path d="M30 10H22L20 8H10C8.9 8 8.01 8.9 8.01 10L8 30C8 31.1 8.9 32 10 32H30C31.1 32 32 31.1 32 30V12C32 10.9 31.1 10 30 10ZM30 30H10V10H18.83L20.83 12H30V30Z" fill="#6366f1"/>
+                                <path d="M15 21H25V23H15V21ZM15 17H25V19H15V17ZM15 25H21V27H15V25Z" fill="#6366f1"/>
+                            </svg>
+                            <span>Prospect</span>
+                        </div>
+                        <div class="goal-icon" data-goal="automate-outreach">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#e9d5ff"/>
+                                <path d="M28 12H12C10.9 12 10 12.9 10 14V26C10 27.1 10.9 28 12 28H28C29.1 28 30 27.1 30 26V14C30 12.9 29.1 12 28 12ZM28 14V16H20H12V14H28ZM12 26V18H20V28H12V26ZM28 26H22V18H28V26Z" fill="#6366f1"/>
+                                <path d="M14 21H18V23H14V21Z" fill="#6366f1"/>
+                            </svg>
+                            <span>Automate</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="visualization" id="team-visualization">
+                    <div class="team-circle">
+                        <div class="team-center">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="20" cy="20" r="20" fill="#fef08a"/>
+                                <path d="M20 20C22.21 20 24 18.21 24 16C24 13.79 22.21 12 20 12C17.79 12 16 13.79 16 16C16 18.21 17.79 20 20 20ZM20 14C21.1 14 22 14.9 22 16C22 17.1 21.1 18 20 18C18.9 18 18 17.1 18 16C18 14.9 18.9 14 20 14ZM20 22C16.67 22 10 23.67 10 27V30H30V27C30 23.67 23.33 22 20 22ZM28 28H12V27C12 26.2 16.67 24 20 24C23.33 24 28 26.2 28 27V28Z" fill="#6366f1"/>
+                            </svg>
+                        </div>
+                        <div class="team-members" id="team-members"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Screen 1: Role Selection -->
+            <div class="screen" id="screen-1">
+                <h1>What best describes you?</h1>
+                <p class="subtitle">We'll use this information to surface the most relevant features and educational resources for you</p>
+                
+                <div class="selection-label">Select one</div>
+                
+                <div class="options-container">
+                    <div class="radio-options">
+                        <label class="radio-option" data-role="sales-rep">
+                            <input type="radio" name="role" value="sales-rep">
+                            <span>Sales Rep</span>
+                        </label>
+                        <label class="radio-option" data-role="marketing">
+                            <input type="radio" name="role" value="marketing">
+                            <span>Marketing</span>
+                        </label>
+                        <label class="radio-option" data-role="business-development">
+                            <input type="radio" name="role" value="business-development">
+                            <span>Business Development</span>
+                        </label>
+                        <label class="radio-option" data-role="founder">
+                            <input type="radio" name="role" value="founder">
+                            <span>Founder</span>
+                        </label>
+                        <label class="radio-option" data-role="sales-leader">
+                            <input type="radio" name="role" value="sales-leader">
+                            <span>Sales Leader</span>
+                        </label>
+                        <label class="radio-option" data-role="operations-support">
+                            <input type="radio" name="role" value="operations-support">
+                            <span>Operations & Support</span>
+                        </label>
+                        <label class="radio-option" data-role="customer-success">
+                            <input type="radio" name="role" value="customer-success">
+                            <span>Customer Success</span>
+                        </label>
+                        <label class="radio-option" data-role="other">
+                            <input type="radio" name="role" value="other">
+                            <span>Other</span>
+                        </label>
+                    </div>
+                    
+                    <div class="custom-role-container" id="custom-role-container">
+                        <input type="text" id="custom-role" placeholder="Tell us about your role" class="custom-role-input">
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="continue-btn" id="continue-to-2">Continue</button>
+                </div>
+            </div>
+
+            <!-- Screen 2: Goals/Use Case -->
+            <div class="screen" id="screen-2">
+                <h1>What would you like to do with Prospecting Tool?</h1>
+                <p class="subtitle">We'll use your input to recommend the best next steps you can take to reach your goals.</p>
+                
+                <div class="selection-label">Select all that apply</div>
+                
+                <div class="options-container">
+                    <div class="card-header">RECOMMENDED FOR YOU</div>
+                    <div class="checkbox-options">
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="goal" value="generate-leads">
+                            <div class="checkbox-content">
+                                <div class="checkbox-title">Get more warm Leads</div>
+                                <div class="checkbox-description">Turn website visitors into customers—identify companies, track engagement, and take action.</div>
+                            </div>
+                        </label>
+                        
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="goal" value="support-widgets">
+                            <div class="checkbox-content">
+                                <div class="checkbox-title">Support and Sales Widgets & Chat</div>
+                                <div class="checkbox-description">Implement chat and support widgets to engage with website visitors</div>
+                            </div>
+                        </label>
+                        
+                        <div class="card-header">MORE OPTIONS</div>
+                        
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="goal" value="prospect-companies">
+                            <div class="checkbox-content">
+                                <div class="checkbox-title">Prospect new companies</div>
+                                <div class="checkbox-description">Research and identify potential companies to target for your sales efforts</div>
+                            </div>
+                        </label>
+                        
+                        <label class="checkbox-option">
+                            <input type="checkbox" name="goal" value="automate-outreach">
+                            <div class="checkbox-content">
+                                <div class="checkbox-title">Automate outreach campaigns</div>
+                                <div class="checkbox-description">Set up automated sequences to engage prospects at scale</div>
+                            </div>
+                        </label>
+                        
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="previous-btn" id="back-to-1">Previous</button>
+                    <button class="continue-btn" id="continue-to-3">Continue</button>
+                </div>
+            </div>
+
+            <!-- Screen 3: Invite Colleagues -->
+            <div class="screen" id="screen-3">
+                <h1>Invite your team members</h1>
+                <p class="subtitle">Collaborate with your colleagues to maximize your prospecting efforts and share insights.</p>
+                
+                <div class="invite-container">
+                    <div class="email-inputs" id="email-inputs">
+                        <div class="email-input-group">
+                            <input type="email" class="email-input" placeholder="colleague@company.com">
+                            <button class="remove-email-btn">×</button>
+                        </div>
+                    </div>
+                    
+                    <button class="add-email-btn" id="add-email-btn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0ZM8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8C14 11.3137 11.3137 14 8 14Z" fill="#6366f1"/>
+                            <path d="M12 7H9V4H7V7H4V9H7V12H9V9H12V7Z" fill="#6366f1"/>
+                        </svg>
+                        Add another
+                    </button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="skip-btn" id="skip-invites">Skip</button>
+                    <button class="previous-btn" id="back-to-2">Previous</button>
+                    <button class="continue-btn" id="finish-onboarding">Continue</button>
+                </div>
+            </div>
+
+            <!-- Completion Screen -->
+            <div class="screen" id="screen-4">
+                <div class="completion-container">
+                    <div class="completion-icon">
+                        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="40" cy="40" r="40" fill="#e9d5ff"/>
+                            <path d="M32 40L38 46L48 34" stroke="#6366f1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h1>You're all set!</h1>
+                    <p class="subtitle">Your account has been configured based on your preferences. Let's start prospecting!</p>
+                    <button class="continue-btn" id="go-to-dashboard">Go to Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

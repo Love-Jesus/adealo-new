@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adealo - Turn Visitors into Opportunities</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <div class="logo">Adealo</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav">
+        <button class="mobile-nav-close" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mobile-nav-links">
+            <a href="#" class="mobile-nav-link">Products</a>
+            <a href="#" class="mobile-nav-link">Solutions</a>
+            <a href="#" class="mobile-nav-link">Pricing</a>
+            <a href="#" class="mobile-nav-link">Resources</a>
+            <a href="#" class="mobile-nav-link">Contact</a>
+        </div>
+        <div class="mobile-nav-cta">
+            <a href="#" class="btn btn-secondary btn-large">Book a demo</a>
+            <a href="#" class="btn btn-primary btn-large">Start free trial</a>
+        </div>
+    </div>
+    <div class="mobile-nav-overlay"></div>
+
+    <!-- Background Gradient Canvas -->
+    <canvas id="gradient-canvas" data-transition-in></canvas>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">Adealo</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link">Products</a></li>
+                    <li><a href="#" class="nav-link">Solutions</a></li>
+                    <li><a href="#" class="nav-link">Pricing</a></li>
+                    <li><a href="#" class="nav-link">Resources</a></li>
+                    <li><a href="#" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-secondary">Book a demo</a>
+                    <a href="#" class="btn btn-primary">Start free trial</a>
+                </div>
+                <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </nav>
+            
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="text-reveal semi-transparent-text">Turn visitors</span>
+                        <span class="text-reveal semi-transparent-text">into opportunities</span>
+                    </h1>
+                    <p class="hero-subtitle text-reveal-delayed">
+                        Identify anonymous website visitors and connect with decision-makers before your competition does
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#" class="btn btn-primary btn-large">Start free trial</a>
+                        <a href="#" class="btn btn-secondary btn-large">Book a demo</a>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                    <!-- First Website Visualization -->
+                    <div class="website-visualization website-visualization-1 glassmorphism float-animation">
+                        <div class="website-frame">
+                            <div class="website-header">
+                                <div class="website-controls">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="website-url">yourwebsite.com</div>
+                            </div>
+                            <div class="website-content">
+                                <div class="website-section"></div>
+                                <div class="website-section"></div>
+                                <div class="website-section"></div>
+                                <div class="widget-container">
+                                    <div class="tracking-widget active">
+                                        <div class="widget-label">Visitor Tracking</div>
+                                        <div class="widget-icon">
+                                            <i class="fas fa-eye"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tracking-widget" style="background-color: rgba(114, 9, 183, 0.2);">
+                                        <div class="widget-label">Live Chat</div>
+                                        <div class="widget-icon">
+                                            <i class="fas fa-comment-dots"></i>
+                                        </div>
+                                    </div>
+                                    <div class="tracking-widget" style="background-color: rgba(76, 201, 240, 0.2);">
+                                        <div class="widget-label">Book a Demo</div>
+                                        <div class="widget-icon">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="data-flow-container">
+                        <div id="data-flow-canvas"></div>
+                    </div>
+                    
+                    <div class="dashboard-visualization glassmorphism float-animation" style="animation-delay: 1s;">
+                        <div class="dashboard-frame">
+                            <div class="dashboard-header">
+                                <div class="dashboard-title">
+                                    <span class="dashboard-title-text">Adealo Dashboard</span>
+                                    <div class="dashboard-tabs">
+                                        <button class="dashboard-tab active" data-view="prospecting-view">
+                                            <i class="fas fa-chart-line"></i>
+                                            <span>Leads</span>
+                                        </button>
+                                        <button class="dashboard-tab" data-view="booking-view">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>Activity</span>
+                                        </button>
+                                        <button class="dashboard-tab" data-view="support-view">
+                                            <i class="fas fa-comment-dots"></i>
+                                            <span>Chat</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-content">
+                                <!-- Prospecting View (Default) -->
+                                <div class="dashboard-view active" id="prospecting-view">
+                                    <div class="dashboard-main full-width">
+                                        <div class="dashboard-card company-card">
+                                            <div class="company-logo"></div>
+                                            <div class="company-info">
+                                                <div class="company-name">Acme Corporation</div>
+                                                <div class="company-details">
+                                                    <span>Technology</span>
+                                                    <span>500+ employees</span>
+                                                </div>
+                                            </div>
+                                            <div class="company-score">87%</div>
+                                        </div>
+                                        <div class="dashboard-card visitor-card">
+                                            <div class="visitor-title">Recent Visitors</div>
+                                            <div class="visitor-list">
+                                                <div class="visitor-item">
+                                                    <div class="visitor-time">2m ago</div>
+                                                    <div class="visitor-page">/pricing</div>
+                                                    <div class="visitor-company">TechCorp</div>
+                                                </div>
+                                                <div class="visitor-item">
+                                                    <div class="visitor-time">5m ago</div>
+                                                    <div class="visitor-page">/features</div>
+                                                    <div class="visitor-company">GrowthWave</div>
+                                                </div>
+                                                <div class="visitor-item">
+                                                    <div class="visitor-time">12m ago</div>
+                                                    <div class="visitor-page">/contact</div>
+                                                    <div class="visitor-company">DataDrive</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Booking View -->
+                                <div class="dashboard-view" id="booking-view">
+                                    <div class="dashboard-main full-width">
+                                        <div class="dashboard-card">
+                                            <div class="activity-header">
+                                                <div class="activity-title">Recent Activity</div>
+                                                <div class="activity-date">Today</div>
+                                            </div>
+                                            <div class="activity-list">
+                                                <div class="activity-item">
+                                                    <div class="activity-icon">
+                                                        <i class="fas fa-calendar-check"></i>
+                                                    </div>
+                                                    <div class="activity-content">
+                                                        <div class="activity-text"><span class="highlight">John Doe (TechCorp)</span> booked a demo for tomorrow at 10:00 AM</div>
+                                                        <div class="activity-time">15 minutes ago</div>
+                                                    </div>
+                                                </div>
+                                                <div class="activity-item">
+                                                    <div class="activity-icon">
+                                                        <i class="fas fa-comment-alt"></i>
+                                                    </div>
+                                                    <div class="activity-content">
+                                                        <div class="activity-text"><span class="highlight">Sarah Miller (GrowthWave)</span> started a chat from the pricing page</div>
+                                                        <div class="activity-time">1 hour ago</div>
+                                                    </div>
+                                                </div>
+                                                <div class="activity-item">
+                                                    <div class="activity-icon">
+                                                        <i class="fas fa-eye"></i>
+                                                    </div>
+                                                    <div class="activity-content">
+                                                        <div class="activity-text"><span class="highlight">DataDrive Solutions</span> viewed your features page</div>
+                                                        <div class="activity-time">3 hours ago</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Support View -->
+                                <div class="dashboard-view" id="support-view">
+                                    <div class="dashboard-main full-width">
+                                        <div class="dashboard-card chat-card">
+                                            <div class="chat-header">
+                                                <div class="chat-user">
+                                                    <div class="chat-avatar">JD</div>
+                                                    <div class="chat-user-info">
+                                                        <div class="chat-user-name">John Doe</div>
+                                                        <div class="chat-user-company">TechCorp</div>
+                                                    </div>
+                                                </div>
+                                                <div class="chat-actions">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </div>
+                                            </div>
+                                            <div class="chat-messages">
+                                                <div class="chat-message incoming">
+                                                    <div class="chat-bubble">Hi, I need help with integration</div>
+                                                    <div class="chat-time">10:42 AM</div>
+                                                </div>
+                                                <div class="chat-message outgoing">
+                                                    <div class="chat-bubble">I'd be happy to help! What specific integration are you working with?</div>
+                                                    <div class="chat-time">10:45 AM</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+    </header>
+
+    <!-- Journey Section -->
+    <section class="journey-section">
+        <div class="journey-content">
+            <h2>How it works</h2>
+            <div class="journey-steps">
+                <div class="journey-step" data-step="1">
+                    <div class="step-progress">Step 1/5</div>
+                    <div class="step-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Visitor lands on your website</h3>
+                        <p>Anonymous visitors browse your content</p>
+                    </div>
+                </div>
+                <div class="journey-step" data-step="2">
+                    <div class="step-progress">Step 2/5</div>
+                    <div class="step-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Widget engages or tracking begins</h3>
+                        <p>Our intelligent tracking starts working</p>
+                    </div>
+                </div>
+                <div class="journey-step" data-step="3">
+                    <div class="step-progress">Step 3/5</div>
+                    <div class="step-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Visitor leaves without converting</h3>
+                        <p>But the opportunity isn't lost</p>
+                    </div>
+                </div>
+                <div class="journey-step" data-step="4">
+                    <div class="step-progress">Step 4/5</div>
+                    <div class="step-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Our technology reveals company identity</h3>
+                        <p>We identify the company behind the visit</p>
+                    </div>
+                </div>
+                <div class="journey-step" data-step="5">
+                    <div class="step-progress">Step 5/5</div>
+                    <div class="step-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Connect with decision-makers</h3>
+                        <p>Reach out to the right people at the right time</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2>Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                    <h3>Identify anonymous visitors</h3>
+                    <p>Convert up to 40% more visitors by revealing the companies behind your website traffic</p>
+                    <a href="#" class="btn btn-text">Learn more</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Engage with intelligence</h3>
+                    <p>Deploy AI-powered sales and support widgets that adapt to visitor behavior</p>
+                    <a href="#" class="btn btn-text">Explore widgets</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="feature-title">
+                        <h3>Precision prospecting</h3>
+                        <span class="beta-tag">Beta</span>
+                    </div>
+                    <p>Identify and connect with ideal customers using our data-driven prospecting tools</p>
+                    <a href="#" class="btn btn-text">Join beta</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Metrics Section -->
+    <section class="metrics-section">
+        <div class="container">
+            <div class="metrics-content">
+                <div class="metrics-list">
+                    <div class="metric">
+                        <h3>70%</h3>
+                        <p>accuracy in company identification</p>
+                    </div>
+                    <div class="metric">
+                        <h3>3X</h3>
+                        <p>faster lead qualification</p>
+                    </div>
+                    <div class="metric">
+                        <h3>40%</h3>
+                        <p>increase in conversion rates</p>
+                    </div>
+                </div>
+                <div class="metrics-visual">
+                    <div class="nodes-visualization">
+                        <div class="node"></div>
+                        <div class="node"></div>
+                        <div class="node"></div>
+                        <div class="node"></div>
+                        <div class="node"></div>
+                        <div class="node"></div>
+                        <div class="connection"></div>
+                        <div class="connection"></div>
+                        <div class="connection"></div>
+                        <div class="connection"></div>
+                        <div class="connection"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2>What our customers say</h2>
+            <div class="testimonials-container">
+                <div class="testimonials-carousel">
+                    <div class="testimonial-card" data-rating="5">
+                        <div class="testimonial-quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="glassy-text-dark">"Adealo has transformed our lead generation process. We've seen a <span class="highlight">35% increase in qualified leads</span> since implementing their solution."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <div class="avatar-placeholder">SJ</div>
+                            </div>
+                            <div class="author-info">
+                                <h4>Sarah Johnson</h4>
+                                <p>Marketing Director, TechCorp</p>
+                            </div>
+                            <div class="company-logo">
+                                <img src="#" alt="TechCorp Logo" data-logo="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card featured" data-rating="5">
+                        <div class="testimonial-quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="glassy-text-dark">"The ability to identify anonymous visitors has been a <span class="highlight">game-changer</span> for our sales team. We're now connecting with prospects we would have otherwise missed."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <div class="avatar-placeholder">MC</div>
+                            </div>
+                            <div class="author-info">
+                                <h4>Michael Chen</h4>
+                                <p>VP of Sales, GrowthWave</p>
+                            </div>
+                            <div class="company-logo">
+                                <img src="#" alt="GrowthWave Logo" data-logo="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card" data-rating="5">
+                        <div class="testimonial-quote-mark"><i class="fas fa-quote-left"></i></div>
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="glassy-text-dark">"The precision of Adealo's data has allowed us to focus our efforts on the most promising leads, <span class="highlight">significantly improving</span> our conversion rates."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">
+                                <div class="avatar-placeholder">ER</div>
+                            </div>
+                            <div class="author-info">
+                                <h4>Emma Rodriguez</h4>
+                                <p>CEO, DataDrive Solutions</p>
+                            </div>
+                            <div class="company-logo">
+                                <img src="#" alt="DataDrive Logo" data-logo="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonials-controls">
+                    <button class="testimonial-arrow prev" aria-label="Previous testimonial">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="testimonial-dots">
+                        <button class="testimonial-dot active" aria-label="Testimonial 1" data-index="0"></button>
+                        <button class="testimonial-dot" aria-label="Testimonial 2" data-index="1"></button>
+                        <button class="testimonial-dot" aria-label="Testimonial 3" data-index="2"></button>
+                    </div>
+                    <button class="testimonial-arrow next" aria-label="Next testimonial">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section class="final-cta-section">
+        <div class="container">
+            <h2>Ready to turn visitors into opportunities?</h2>
+            <p>Start generating qualified leads today</p>
+            <a href="#" class="btn btn-primary">Start free trial</a>
+            <p class="no-credit-card">No credit card required</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">Adealo</div>
+                    <p>Turn anonymous visitors into qualified leads</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Products</h4>
+                        <ul>
+                            <li><a href="#">Visitor Identification</a></li>
+                            <li><a href="#">Smart Widgets</a></li>
+                            <li><a href="#">Prospecting Platform</a></li>
+                            <li><a href="#">Integrations</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>Solutions</h4>
+                        <ul>
+                            <li><a href="#">For Marketing</a></li>
+                            <li><a href="#">For Sales</a></li>
+                            <li><a href="#">For Startups</a></li>
+                            <li><a href="#">For Enterprise</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Case Studies</a></li>
+                            <li><a href="#">Webinars</a></li>
+                            <li><a href="#">Documentation</a></li>
+                        </ul>
+                    </div>
+                    <div class="link-group">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay updated</h4>
+                    <p>Subscribe to our newsletter for the latest updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address">
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 Adealo. All rights reserved.</p>
+                </div>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script>
+        // Register ScrollTrigger plugin
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            gsap.registerPlugin(ScrollTrigger);
+        }
+    </script>
+    <script src="js/advanced-gradient.js"></script>
+    <script src="js/journey-gradient.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/header.js"></script>
+    <script src="js/sections.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

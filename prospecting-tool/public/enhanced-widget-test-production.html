@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Widget Test</title>
+  <style>
+    :root {
+      --primary-color: #6e8efb;
+      --primary-dark: #4a6cf7;
+      --text-color: #333;
+      --bg-color: #f9f9f9;
+      --border-color: #ddd;
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --error-color: #dc3545;
+      --info-color: #17a2b8;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .main-content {
+      flex: 1;
+      max-width: 800px;
+      padding: 20px;
+    }
+    
+    .console-panel {
+      width: 400px;
+      background-color: #1e1e1e;
+      color: #f0f0f0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid #333;
+      position: relative;
+    }
+    
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px;
+      border-bottom: 1px solid #444;
+      margin-bottom: 10px;
+    }
+    
+    .console-title {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    
+    .console-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .console-action-button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .console-action-button:hover {
+      background-color: #444;
+    }
+    
+    .console-logs {
+      flex: 1;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 13px;
+      padding: 5px;
+    }
+    
+    .log-entry {
+      margin-bottom: 5px;
+      padding: 3px 5px;
+      border-radius: 2px;
+      word-break: break-word;
+    }
+    
+    .log-timestamp {
+      color: #888;
+      font-size: 11px;
+      margin-right: 5px;
+    }
+    
+    .log-level {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+    
+    .log-info {
+      border-left: 3px solid var(--info-color);
+    }
+    
+    .log-success {
+      border-left: 3px solid var(--success-color);
+    }
+    
+    .log-warning {
+      border-left: 3px solid var(--warning-color);
+    }
+    
+    .log-error {
+      border-left: 3px solid var(--error-color);
+    }
+    
+    .log-network {
+      border-left: 3px solid #9c27b0;
+    }
+    
+    .toggle-console {
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      transform: translateY(-50%);
+      background-color: #1e1e1e;
+      color: #fff;
+      border: 1px solid #333;
+      border-right: none;
+      border-radius: 4px 0 0 4px;
+      padding: 10px 5px;
+      cursor: pointer;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+    }
+    
+    .container {
+      background-color: var(--bg-color);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .instructions {
+      background-color: #f0f7ff;
+      border-left: 4px solid var(--primary-color);
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    
+    code {
+      background-color: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .network-details {
+      margin-top: 5px;
+      padding: 5px;
+      background-color: #2d2d2d;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    
+    .collapsible {
+      cursor: pointer;
+    }
+    
+    .collapsible::before {
+      content: '▶';
+      display: inline-block;
+      margin-right: 5px;
+      transition: transform 0.2s;
+    }
+    
+    .collapsible.expanded::before {
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <h1>Enhanced Widget Test</h1>
+    
+    <div class="instructions">
+      <p>This page tests the enhanced widget with a direct configuration. The widget should appear in the bottom-right corner of the page.</p>
+      <p>You can enter a widget ID below to test a specific widget configuration from Firestore.</p>
+    </div>
+    
+    <div class="container">
+      <label for="widgetId">Widget ID:</label>
+      <input type="text" id="widgetId" placeholder="Enter widget ID">
+      <button onclick="loadWidget()">Load Widget</button>
+    </div>
+    
+    <div class="container">
+      <h2>Features to Test</h2>
+      <ul>
+        <li>Launcher appearance (gradient, shape, size, pulse animation)</li>
+        <li>Widget position</li>
+        <li>Animation when opening/closing</li>
+        <li>Chat functionality</li>
+        <li>Book Demo functionality</li>
+        <li>Call Me functionality</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="console-panel">
+    <button class="toggle-console" onclick="toggleConsole()">Console</button>
+    <div class="console-header">
+      <div class="console-title">Widget Console</div>
+      <div class="console-actions">
+        <button class="console-action-button" onclick="clearLogs()">Clear</button>
+        <button class="console-action-button" onclick="downloadLogs()">Save</button>
+      </div>
+    </div>
+    <div class="console-logs" id="console-logs"></div>
+  </div>
+  
+  <script>
+    // Console functionality
+    const consolePanel = document.querySelector('.console-panel');
+    const consoleLogs = document.getElementById('console-logs');
+    let logs = [];
+    
+    function toggleConsole() {
+      consolePanel.classList.toggle('hidden');
+    }
+    
+    function clearLogs() {
+      logs = [];
+      consoleLogs.innerHTML = '';
+      logInfo('Console cleared');
+    }
+    
+    function downloadLogs() {
+      const logText = logs.map(log => {
+        return `[${log.timestamp}] [${log.level.toUpperCase()}] ${log.message}`;
+      }).join('\n');
+      
+      const blob = new Blob([logText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `widget-logs-${new Date().toISOString().replace(/:/g, '-')}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      logInfo('Logs saved to file');
+    }
+    
+    function formatTimestamp() {
+      const now = new Date();
+      return now.toLocaleTimeString('en-US', { hour12: false }) + '.' + now.getMilliseconds().toString().padStart(3, '0');
+    }
+    
+    function addLogEntry(level, message, details = null) {
+      const timestamp = formatTimestamp();
+      
+      logs.push({
+        timestamp,
+        level,
+        message,
+        details
+      });
+      
+      const logEntry = document.createElement('div');
+      logEntry.className = `log-entry log-${level}`;
+      
+      const timestampSpan = document.createElement('span');
+      timestampSpan.className = 'log-timestamp';
+      timestampSpan.textContent = timestamp;
+      
+      const levelSpan = document.createElement('span');
+      levelSpan.className = 'log-level';
+      levelSpan.textContent = level.toUpperCase();
+      
+      const messageSpan = document.createElement('span');
+      messageSpan.className = 'log-message';
+      messageSpan.textContent = message;
+      
+      logEntry.appendChild(timestampSpan);
+      logEntry.appendChild(levelSpan);
+      logEntry.appendChild(messageSpan);
+      
+      if (details) {
+        logEntry.classList.add('collapsible');
+        logEntry.addEventListener('click', function() {
+          this.classList.toggle('expanded');
+          const detailsElement = this.querySelector('.network-details');
+          if (detailsElement) {
+            detailsElement.classList.toggle('hidden');
+          }
+        });
+        
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'network-details hidden';
+        detailsDiv.textContent = typeof details === 'object' ? JSON.stringify(details, null, 2) : details;
+        logEntry.appendChild(detailsDiv);
+      }
+      
+      consoleLogs.appendChild(logEntry);
+      consoleLogs.scrollTop = consoleLogs.scrollHeight;
+    }
+    
+    function logInfo(message) {
+      addLogEntry('info', message);
+    }
+    
+    function logSuccess(message) {
+      addLogEntry('success', message);
+    }
+    
+    function logWarning(message) {
+      addLogEntry('warning', message);
+    }
+    
+    function logError(message, error = null) {
+      addLogEntry('error', message, error ? error.stack || error.message || error : null);
+    }
+    
+    function logNetwork(method, url, status, data = null) {
+      const message = `${method} ${url} ${status}`;
+      addLogEntry('network', message, data);
+    }
+    
+    // Intercept fetch and XMLHttpRequest to log network requests
+    const originalFetch = window.fetch;
+    window.fetch = async function(url, options = {}) {
+      const method = options.method || 'GET';
+      logNetwork(method, url, 'PENDING');
+      
+      try {
+        const response = await originalFetch(url, options);
+        const responseClone = response.clone();
+        
+        try {
+          const data = await responseClone.json();
+          logNetwork(method, url, response.status, data);
+        } catch (e) {
+          logNetwork(method, url, response.status);
+        }
+        
+        return response;
+      } catch (error) {
+        logNetwork(method, url, 'FAILED', error);
+        throw error;
+      }
+    };
+    
+    const originalXhrOpen = XMLHttpRequest.prototype.open;
+    const originalXhrSend = XMLHttpRequest.prototype.send;
+    
+    XMLHttpRequest.prototype.open = function(method, url) {
+      this._method = method;
+      this._url = url;
+      return originalXhrOpen.apply(this, arguments);
+    };
+    
+    XMLHttpRequest.prototype.send = function() {
+      logNetwork(this._method, this._url, 'PENDING');
+      
+      this.addEventListener('load', function() {
+        try {
+          const data = JSON.parse(this.responseText);
+          logNetwork(this._method, this._url, this.status, data);
+        } catch (e) {
+          logNetwork(this._method, this._url, this.status);
+        }
+      });
+      
+      this.addEventListener('error', function() {
+        logNetwork(this._method, this._url, 'FAILED');
+      });
+      
+      return originalXhrSend.apply(this, arguments);
+    };
+    
+    // Intercept console methods
+    const originalConsoleLog = console.log;
+    const originalConsoleInfo = console.info;
+    const originalConsoleWarn = console.warn;
+    const originalConsoleError = console.error;
+    
+    console.log = function() {
+      logInfo(Array.from(arguments).join(' '));
+      originalConsoleLog.apply(console, arguments);
+    };
+    
+    console.info = function() {
+      logInfo(Array.from(arguments).join(' '));
+      originalConsoleInfo.apply(console, arguments);
+    };
+    
+    console.warn = function() {
+      logWarning(Array.from(arguments).join(' '));
+      originalConsoleWarn.apply(console, arguments);
+    };
+    
+    console.error = function() {
+      logError(Array.from(arguments).join(' '));
+      originalConsoleError.apply(console, arguments);
+    };
+    
+    // Function to load the widget
+    function loadWidget() {
+      // Remove any existing widget script
+      const existingScript = document.getElementById('widget-script');
+      if (existingScript) {
+        existingScript.remove();
+        logInfo('Removed existing widget script');
+      }
+      
+      const widgetId = document.getElementById('widgetId').value.trim();
+      
+      if (!widgetId) {
+        logError('Widget ID is required');
+        alert('Please enter a widget ID');
+        return;
+      }
+      
+      logInfo(`Loading widget with ID: ${widgetId}`);
+      
+      // Create a new script element
+      const script = document.createElement('script');
+      script.id = 'widget-script';
+      script.src = `widget-loader.js?widgetId=${widgetId}`;
+      
+      script.onload = function() {
+        logSuccess('Widget script loaded successfully');
+      };
+      
+      script.onerror = function(error) {
+        logError('Failed to load widget script', error);
+      };
+      
+      // Append the script to the document
+      document.body.appendChild(script);
+      logInfo('Widget script added to the document');
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      logInfo('Enhanced Widget Test page loaded');
+    });
+    
+    // Handle errors
+    window.addEventListener('error', function(event) {
+      logError('Uncaught error', event.error);
+    });
+    
+    // Handle unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(event) {
+      logError('Unhandled promise rejection', event.reason);
+    });
+  </script>
+</body>
+</html>

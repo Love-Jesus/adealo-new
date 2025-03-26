@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales-Focused Chat Widget</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+        }
+
+        /* Main Container */
+        #intercom-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2147483000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Launcher Button */
+        .launcher {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6e8efb, #4a6cf7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2147483001;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .launcher:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+        
+        .launcher-icon {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        /* Messenger Container */
+        .messenger-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 380px;
+            height: 600px;
+            max-height: 80vh;
+            background-color: transparent;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            transform-origin: bottom right;
+            pointer-events: none;
+            visibility: hidden;
+            transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s;
+        }
+        
+        .messenger-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+            visibility: visible;
+        }
+        
+        /* Home Screen */
+        .home-screen {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        /* Header Section */
+        .header-section {
+            background: linear-gradient(135deg, #6e8efb, #4a6cf7);
+            color: white;
+            padding: 32px 24px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .greeting {
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        
+        .tagline {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        /* Content Section */
+        .content-section {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+        
+        .action-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .action-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .action-icon {
+            width: 24px;
+            height: 24px;
+            color: #6e8efb;
+        }
+        
+        /* Navigation Section */
+        .nav-section {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: white;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            color: #6e8efb;
+        }
+        
+        .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        /* Chat Screen */
+        .chat-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .header-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .header-button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background-color: #f9f9fa;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 14px 16px;
+            border-radius: 18px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .message-bubble.admin {
+            background-color: #f0f0f0;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+        
+        .message-bubble.user {
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .admin-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .admin-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-input {
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
+            padding: 12px 16px;
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            min-height: 54px;
+            max-height: 150px;
+        }
+
+        /* Book a Demo Screen */
+        .book-demo-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .demo-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .demo-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .demo-description {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .calendly-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Call Me Now Screen */
+        .call-me-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .call-content {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .call-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .call-description {
+            color: #666;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .phone-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            outline: none;
+        }
+
+        .call-button {
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .call-button:hover {
+            background-color: #333;
+        }
+
+        .call-timer {
+            margin-top: 24px;
+            font-size: 18px;
+            color: #888;
+            display: none;
+        }
+
+        /* Survey Screen */
+        .survey-screen {
+            display: none;
+            padding: 24px;
+            background-color: white;
+            border-radius: 16px;
+            height: 100%;
+        }
+
+        .survey-question {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .survey-option {
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .survey-option:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* SVG Icons - Using inline for simplicity */
+        .logo-svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* Launcher Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales-Focused Chat Widget</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+        }
+
+        /* Main Container */
+        #intercom-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2147483000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Launcher Button */
+        .launcher {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6e8efb, #4a6cf7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2147483001;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .launcher:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+        
+        .launcher-icon {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        /* Messenger Container */
+        .messenger-container {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 380px;
+            height: 600px;
+            max-height: 80vh;
+            background-color: transparent;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            transform-origin: bottom right;
+            pointer-events: none;
+            visibility: hidden;
+            transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s;
+        }
+        
+        .messenger-container.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+            visibility: visible;
+        }
+        
+        /* Home Screen */
+        .home-screen {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        /* Header Section */
+        .header-section {
+            background: linear-gradient(135deg, #6e8efb, #4a6cf7);
+            color: white;
+            padding: 32px 24px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .greeting {
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        
+        .tagline {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        /* Content Section */
+        .content-section {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+        }
+        
+        .action-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .action-card:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .action-icon {
+            width: 24px;
+            height: 24px;
+            color: #6e8efb;
+        }
+        
+        /* Navigation Section */
+        .nav-section {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: white;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            color: #6e8efb;
+        }
+        
+        .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        /* Chat Screen */
+        .chat-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .back-button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .header-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .header-subtitle {
+            font-size: 14px;
+            color: #777;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .header-button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background-color: #f9f9fa;
+        }
+        
+        .message-bubble {
+            max-width: 70%;
+            padding: 14px 16px;
+            border-radius: 18px;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .message-bubble.admin {
+            background-color: #f0f0f0;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+        
+        .message-bubble.user {
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .admin-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .admin-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .admin-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-input {
+            border: 1px solid #e0e0e0;
+            border-radius: 24px;
+            padding: 12px 16px;
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            min-height: 54px;
+            max-height: 150px;
+        }
+
+        /* Book a Demo Screen */
+        .book-demo-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .demo-content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .demo-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .demo-description {
+            color: #666;
+            margin-bottom: 24px;
+        }
+
+        .calendly-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Call Me Now Screen */
+        .call-me-screen {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background-color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .call-content {
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .call-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .call-description {
+            color: #666;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .phone-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+            outline: none;
+        }
+
+        .call-button {
+            background-color: #000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .call-button:hover {
+            background-color: #333;
+        }
+
+        .call-timer {
+            margin-top: 24px;
+            font-size: 18px;
+            color: #888;
+            display: none;
+        }
+
+        /* Survey Screen */
+        .survey-screen {
+            display: none;
+            padding: 24px;
+            background-color: white;
+            border-radius: 16px;
+            height: 100%;
+        }
+
+        .survey-question {
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        .survey-option {
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .survey-option:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* SVG Icons - Using inline for simplicity */
+        .logo-svg {
+            width: 24px;
+            height: 24px;
+        }
+        
+        /* Launcher Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="intercom-container">
+        <!-- Launcher Button -->
+        <div class="launcher" id="launcher">
+            <svg class="launcher-icon" width="20" height="20" viewBox="0 0 28 32" xmlns="http://www.w3.org/2000/svg">
+                <path d="M28 32s-4.714-1.855-8.527-3.34H3.437C1.54 28.66 0 27.026 0 25.013V3.644C0 1.633 1.54 0 3.437 0h21.125c1.898 0 3.437 1.632 3.437 3.645v18.404H28V32zm-4.139-11.982a.88.88 0 00-1.292-.105c-.03.026-3.015 2.681-8.57 2.681-5.486 0-8.517-2.636-8.571-2.684a.88.88 0 00-1.29.107.819.819 0 00-.113 1.212c.115.125 2.903 3.132 9.974 3.132 7.072 0 9.86-3.007 9.975-3.132a.82.82 0 00-.113-1.211z" fill="#FFFFFF"></path>
+            </svg>
+        </div>
+        
+        <!-- Messenger Container -->
+        <div class="messenger-container" id="messenger">
+            <!-- Survey Screen -->
+            <div class="survey-screen" id="surveyScreen">
+                <div class="survey-question">What brings you to our site today?</div>
+                <div class="survey-option" data-score="10">Enterprise solution for my company</div>
+                <div class="survey-option" data-score="5">Personal business use</div>
+                <div class="survey-option" data-score="3">Research/Education</div>
+            </div>
+
+            <!-- Home Screen -->
+            <div class="home-screen" id="home-screen">
+                <div class="header-section">
+                    <h2 class="greeting">Hej 👋</h2>
+                    <h1 class="tagline">Hur kan vi hjälpa till?</h1>
+                </div>
+                
+                <div class="content-section">
+                    <div class="action-card" id="ask-question">
+                        <div class="action-title">Ställ en fråga</div>
+                        <div class="action-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM13 17H11V15H13V17ZM15.07 9.25L14.17 10.17C13.45 10.9 13 11.5 13 13H11V12.5C11 11.4 11.45 10.4 12.17 9.67L13.41 8.41C13.78 8.05 14 7.55 14 7C14 5.9 13.1 5 12 5C10.9 5 10 5.9 10 7H8C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7C16 7.88 15.64 8.68 15.07 9.25Z" fill="#6e8efb"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Navigation Section -->
+                <div class="nav-section">
+                    <div class="nav-item" id="nav-support">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM13 17H11V15H13V17ZM15.07 9.25L14.17 10.17C13.45 10.9 13 11.5 13 13H11V12.5C11 11.4 11.45 10.4 12.17 9.67L13.41 8.41C13.78 8.05 14 7.55 14 7C14 5.9 13.1 5 12 5C10.9 5 10 5.9 10 7H8C8 4.79 9.79 3 12 3C14.21 3 16 4.79 16 7C16 7.88 15.64 8.68 15.07 9.25Z" fill="#6e8efb"/>
+                        </svg>
+                        <div class="nav-text">Support</div>
+                    </div>
+                    <div class="nav-item" id="nav-book-demo">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 4H5C3.89 4 3 4.9 3 6V20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM19 8H5V6H19V8ZM12 13H17V15H12V13Z" fill="#6e8efb"/>
+                        </svg>
+                        <div class="nav-text">Book a demo</div>
+                    </div>
+                    <div class="nav-item" id="nav-call-me">
+                        <svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6.62 10.79C8.06 13.62 10.38 15.94 13.21 17.38L15.41 15.18C15.68 14.91 16.08 14.82 16.43 14.94C17.55 15.31 18.76 15.51 20 15.51C20.55 15.51 21 15.96 21 16.51V20C21 20.55 20.55 21 20 21C10.61 21 3 13.39 3 4C3 3.45 3.45 3 4 3H7.5C8.05 3 8.5 3.45 8.5 4C8.5 5.25 8.7 6.45 9.07 7.57C9.18 7.92 9.1 8.31 8.82 8.59L6.62 10.79Z" fill="#6e8efb"/>
+                        </svg>
+                        <div class="nav-text">Call me now</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Screen -->
+            <div class="chat-screen" id="chat-screen">
+                <div class="chat-header">
+                    <div class="header-left">
+                        <button class="back-button" id="back-button">←</button>
+                        <div class="admin-avatar">
+                            <svg width="16" height="16" viewBox="0 0 28 32" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M28 32s-4.714-1.855-8.527-3.34H3.437C1.54 28.66 0 27.026 0 25.013V3.644C0 1.633 1.54 0 3.437 0h21.125c1.898 0 3.437 1.632 3.437 3.645v18.404H28V32zm-4.139-11.982a.88.88 0 00-1.292-.105c-.03.026-3.015 2.681-8.57 2.681-5.486 0-8.517-2.636-8.571-2.684a.88.88 0 00-1.29.107.819.819 0 00-.113 1.212c.115.125 2.903 3.132 9.974 3.132 7.072 0 9.86-3.007 9.975-3.132a.82.82 0 00-.113-1.211z" fill="#FFFFFF"></path>
+                            </svg>
+                        </div>
+                        <div class="header-info">
+                            <div class="header-title">Fin</div>
+                            <div class="header-subtitle">Teamet kan också hjälpa dig</div>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="header-button">⋯</button>
+                        <button class="header-button">⤢</button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages">
+                    <div class="admin-info">
+                        <div class="admin-avatar">
+                            <svg width="16" height="16" viewBox="0 0 28 32" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M28 32s-4.714-1.855-8.527-3.34H3.437C1.54 28.66 0 27.026 0 25.013V3.644C0 1.633 1.54 0 3.437 0h21.125c1.898 0 3.437 1.632 3.437 3.645v18.404H28V32zm-4.139-11.982a.88.88 0 00-1.292-.105c-.03.026-3.015 2.681-8.57 2.681-5.486 0-8.517-2.636-8.571-2.684a.88.88 0 00-1.29.107.819.819 0 00-.113 1.212c.115.125 2.903 3.132 9.974 3.132 7.072 0 9.86-3.007 9.975-3.132a.82.82 0 00-.113-1.211z" fill="#FFFFFF"></path>
+                            </svg>
+                        </div>
+                        <div class="admin-name">Fin</div>
+                    </div>
+                    
+                    <div class="message-bubble admin">
+                        <div class="message-text">Hi there, welcome to Intercom 👋</div>
+                    </div>
+                    
+                    <div class="message-bubble admin">
+                        <div class="message-text">What would you like help with?</div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <textarea class="chat-input" placeholder="Type your message..."></textarea>
+                </div>
+            </div>
+            
+            <!-- Book a Demo Screen -->
+            <div class="book-demo-screen" id="book-demo-screen">
+                <div class="chat-header">
+                    <div class="header-left">
+                        <button class="back-button book-demo-back">←</button>
+                        <div class="header-info">
+                            <div class="header-title">Book a Demo</div>
+                            <div class="header-subtitle">Schedule a time with our team</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="demo-content">
+                    <h2 class="demo-title">Choose a time for your demo</h2>
+                    <p class="demo-description">Pick a date and time that works best for you. Our team will walk you through our product and answer any questions you have.</p>
+                    
+                    <!-- Calendly Integration -->
+                    <iframe
+                        class="calendly-iframe"
+                        src="https://calendly.com/junior-hallberg-dealfront/30min"
+                        id="calendly-iframe"
+                    ></iframe>
+                </div>
+            </div>
+            
+            <!-- Call Me Now Screen -->
+            <div class="call-me-screen" id="call-me-screen">
+                <div class="chat-header">
+                    <div class="header-left">
+                        <button class="back-button call-me-back">←</button>
+                        <div class="header-info">
+                            <div class="header-title">Call Me Now</div>
+                            <div class="header-subtitle">Get immediate assistance</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="call-content">
+                    <h2 class="call-title">Get a call from Martin</h2>
+                    <p class="call-description">Enter your phone number and Martin will call you in the next 3 minutes.</p>
+                    
+                    <input type="tel" class="phone-input" placeholder="Your phone number" id="phone-input">
+                    <button class="call-button" id="request-call-button">Request Call</button>
+                    
+                    <div class="call-timer" id="call-timer">Martin will call you within 3:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const launcher = document.getElementById('launcher');
+        const messenger = document.getElementById('messenger');
+        const homeScreen = document.getElementById('home-screen');
+        const chatScreen = document.getElementById('chat-screen');
+        const bookDemoScreen = document.getElementById('book-demo-screen');
+        const callMeScreen = document.getElementById('call-me-screen');
+        const surveyScreen = document.getElementById('surveyScreen');
+        const askQuestionButton = document.getElementById('ask-question');
+        const backButton = document.getElementById('back-button');
+        const bookDemoBackButton = document.querySelector('.book-demo-back');
+        const callMeBackButton = document.querySelector('.call-me-back');
+        
+        // Navigation items
+        const navSupport = document.getElementById('nav-support');
+        const navBookDemo = document.getElementById('nav-book-demo');
+        const navCallMe = document.getElementById('nav-call-me');
+        
+        // Survey functionality
+        let surveyShown = false;
+        const surveyOptions = document.querySelectorAll('.survey-option');
+        
+        // Modified toggle function
+        function showScreen(screen) {
+            homeScreen.style.display = 'none';
+            chatScreen.style.display = 'none';
+            bookDemoScreen.style.display = 'none';
+            callMeScreen.style.display = 'none';
+            surveyScreen.style.display = 'none';
+            
+            screen.style.display = 'flex';
+        }
+
+        // Updated launcher click handler
+        launcher.addEventListener('click', () => {
+            messenger.classList.toggle('active');
+            launcher.classList.remove('pulse');
+            
+            if (!surveyShown) {
+                showScreen(surveyScreen);
+                surveyShown = true;
+            } else {
+                showScreen(homeScreen);
+            }
+        });
+
+        // Survey option handling
+        surveyOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const score = option.dataset.score;
+                console.log(`Lead score: ${score}`);
+                showScreen(homeScreen);
+            });
+        });
+
+        // Rest of the working JavaScript code
+        // ... (keep all existing navigation, chat, and call functionality) ...
+
+        // Close messenger when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!intercomContainer.contains(e.target) && 
+                !launcher.contains(e.target) && 
+                messenger.classList.contains('active')) {
+                messenger.classList.remove('active');
+            }
+        });
+
+        // Reference to intercom container
+        const intercomContainer = document.getElementById('intercom-container');
+    });
+    </script>
+</body>
+</html>

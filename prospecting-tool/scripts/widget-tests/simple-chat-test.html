@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Chat Widget Test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .widget-options {
+      margin: 30px 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      border-radius: 8px;
+    }
+    .widget-id-option {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .widget-id-option:hover {
+      background-color: #e9e9e9;
+    }
+    .widget-id-option.active {
+      background-color: #e0f7fa;
+      border-color: #00bcd4;
+    }
+    button {
+      background-color: #3A36DB;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #2a27b0;
+    }
+    .instructions {
+      margin-top: 30px;
+      padding: 15px;
+      background-color: #fffde7;
+      border-left: 4px solid #ffd600;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple Chat Widget Test</h1>
+  <p>This page tests the chat widget without any console overrides.</p>
+
+  <div class="widget-options">
+    <h3>Select a Widget ID to Test:</h3>
+    <div class="widget-id-option active" data-widget-id="WnwIUWLRHxM09A6EYJPY">
+      <strong>Widget ID:</strong> WnwIUWLRHxM09A6EYJPY
+      <p><small>(Used in local-test-chat-widget.html)</small></p>
+    </div>
+    <div class="widget-id-option" data-widget-id="aTHwvPFrdIziL0DEYUOr">
+      <strong>Widget ID:</strong> aTHwvPFrdIziL0DEYUOr
+      <p><small>(Used in test-user-widget-local.html)</small></p>
+    </div>
+    <div class="widget-id-option" data-widget-id="35hyPrUz5VVIQvYyelk5">
+      <strong>Widget ID:</strong> 35hyPrUz5VVIQvYyelk5
+      <p><small>(Mentioned in CHAT-WIDGET-FIX.md)</small></p>
+    </div>
+    <div class="widget-id-option" data-widget-id="IM66cdOmAdDQ4CIaz7XM">
+      <strong>Widget ID:</strong> IM66cdOmAdDQ4CIaz7XM
+      <p><small>(Used in test-chatt-widget.html)</small></p>
+    </div>
+    
+    <button id="load-widget">Load Selected Widget</button>
+  </div>
+
+  <div class="instructions">
+    <h3>Instructions:</h3>
+    <ol>
+      <li>Make sure your development server is running with <code>npm run dev</code></li>
+      <li>Select a widget ID from the options above</li>
+      <li>Click "Load Selected Widget" to load the widget</li>
+      <li>The chat widget should appear in the bottom-right corner of the page</li>
+      <li>Click on the chat button to open the chat panel</li>
+      <li>Try sending a message to test the chat functionality</li>
+    </ol>
+  </div>
+
+  <div id="widget-container"></div>
+
+  <script>
+    // Widget loading functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Handle widget ID selection
+      const widgetOptions = document.querySelectorAll('.widget-id-option');
+      let selectedWidgetId = 'WnwIUWLRHxM09A6EYJPY'; // Default widget ID
+      
+      widgetOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          // Remove active class from all options
+          widgetOptions.forEach(opt => opt.classList.remove('active'));
+          
+          // Add active class to selected option
+          this.classList.add('active');
+          
+          // Update selected widget ID
+          selectedWidgetId = this.getAttribute('data-widget-id');
+        });
+      });
+      
+      // Handle load widget button click
+      document.getElementById('load-widget').addEventListener('click', function() {
+        // Clear any existing widget
+        document.getElementById('widget-container').innerHTML = '';
+        
+        // Create and append the widget script
+        const script = document.createElement('script');
+        script.textContent = `
+          (function(w,d,s,o,f,js,fjs){
+            w['AdealoWidget']=o;w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments)};
+            w[o].l=1*new Date();js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
+            js.async=1;js.src=f;fjs.parentNode.insertBefore(js,fjs);
+          })(window,document,'script','adealo','http://localhost:5173/local-loader.js');
+          adealo('init', '${selectedWidgetId}');
+        `;
+        
+        document.getElementById('widget-container').appendChild(script);
+        
+        // Show loading message
+        alert('Loading widget with ID: ' + selectedWidgetId);
+      });
+    });
+  </script>
+</body>
+</html>
