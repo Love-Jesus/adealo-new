@@ -19,8 +19,8 @@ Before you begin, make sure you have the following installed:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Love-Jesus/Adealo.git
-   cd Adealo
+   git clone https://github.com/Love-Jesus/adealo-new.git
+   cd adealo-new
    ```
 
 2. **Install dependencies**:

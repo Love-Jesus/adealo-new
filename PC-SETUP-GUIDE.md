@@ -26,8 +26,8 @@ Before you begin, make sure you have the following installed on your PC:
    - Navigate to where you want to store the project
    - Run:
      ```
-     git clone https://github.com/Love-Jesus/Adealo.git
-     cd Adealo
+     git clone https://github.com/Love-Jesus/adealo-new.git
+     cd adealo-new
      ```
 
 2. **Install dependencies**:

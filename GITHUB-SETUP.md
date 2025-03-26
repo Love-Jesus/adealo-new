@@ -51,7 +51,7 @@ git credential-manager store
 You can include your token directly in the remote URL:
 
 ```bash
-git remote set-url origin https://YOUR_USERNAME:YOUR_TOKEN@github.com/Love-Jesus/Adealo.git
+git remote set-url origin https://YOUR_USERNAME:YOUR_TOKEN@github.com/Love-Jesus/adealo-new.git
 ```
 
 Replace:
@@ -92,10 +92,10 @@ Once your repository is on GitHub, you can clone it on your PC:
 
 ```bash
 # Clone the repository
-git clone https://github.com/Love-Jesus/Adealo.git
+git clone https://github.com/Love-Jesus/adealo-new.git
 
 # Or if you're using SSH
-git clone git@github.com:Love-Jesus/Adealo.git
+git clone git@github.com:Love-Jesus/adealo-new.git
 ```
 
 ## Setting Up SSH Authentication (Alternative Method)
@@ -120,9 +120,9 @@ If you prefer using SSH instead of HTTPS:
    - Paste your key and save
 
 3. **Change your remote URL to use SSH**:
-   ```bash
-   git remote set-url origin git@github.com:Love-Jesus/Adealo.git
-   ```
+```bash
+git remote set-url origin git@github.com:Love-Jesus/adealo-new.git
+```
 
 4. **Push your repository**:
    ```bash
